@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="display">
+
+    <!-- Header -->
+    <header id="header">
+      <span id="shop-name"></span>
+      <span id="clock"></span>
+    </header>
+
+    <!-- Main layout: left rotating | divider | right persistent -->
+    <div id="main-layout">
+
+      <!-- LEFT: rotating panel -->
+      <div id="left-panel">
+
+        <!-- Train times -->
+        <div id="left-septa" class="left-slide">
+          <div class="left-inner">
+            <div class="septa-header">
+              <img id="septa-logo" src="septa-logo.svg" alt="SEPTA" onerror="this.style.display='none'">
+              <div class="slide-label">Elkins Park Station</div>
+            </div>
+            <div id="septa-grid" class="septa-grid">
+              <div class="septa-col">
+                <div class="line-name">Warminster</div>
+                <div id="war-trains" class="train-list"></div>
+              </div>
+              <div class="septa-col-divider"></div>
+              <div class="septa-col">
+                <div class="line-name">West Trenton</div>
+                <div id="tre-trains" class="train-list"></div>
+              </div>
+            </div>
+            <div id="septa-error" class="error-msg" style="display:none">Train data unavailable</div>
+          </div>
+        </div>
+
+        <!-- Now Playing -->
+        <div id="left-nowplaying" class="left-slide">
+          <div class="left-inner nowplaying-inner">
+            <div id="album-art-wrap">
+              <img id="album-art" src="" alt="">
+              <div id="album-art-placeholder"></div>
+            </div>
+            <div id="track-info">
+              <div class="slide-label">Now Playing</div>
+              <div id="track-title"></div>
+              <div id="track-artist"></div>
+              <div id="track-album"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured special spotlight -->
+        <div id="left-featured" class="left-slide">
+          <div class="left-inner spotlight-inner">
+            <div id="spotlight-category" class="slide-label"></div>
+            <div id="spotlight-name"></div>
+            <div id="spotlight-desc"></div>
+            <div id="spotlight-price"></div>
+          </div>
+        </div>
+
+      </div><!-- /left-panel -->
+
+      <!-- Vertical divider -->
+      <div id="panel-divider"></div>
+
+      <!-- RIGHT: persistent specials -->
+      <div id="right-panel">
+        <div id="specials-header">
+          <div class="slide-label">Today's Specials</div>
+          <img id="ms-logo" src="morning-static-logo.png" alt="Morning Static" onerror="this.style.display='none'">
+        </div>
+        <div id="right-specials"></div>
+      </div>
+
+    </div><!-- /main-layout -->
+
+    <!-- Progress bar -->
+    <div id="progress-bar"></div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

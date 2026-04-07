@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "category": "Hot",
+      "drinks": [
+        {
+          "name": "Some Latte",
+          "ingredients": "espresso · steamed milk · some syrup",
+          "price": "$5"
+        },
+        {
+          "name": "Some Latte",
+          "ingredients": "espresso · steamed milk · some syrup",
+          "price": "$5"
+        },
+        {
+          "name": "Some Latte",
+          "ingredients": "espresso · steamed milk · some syrup",
+          "price": "$5"
+        }
+      ]
+    },
+    {
+      "category": "Cold",
+      "drinks": [
+        {
+          "name": "Blackberry Espresso Tonic",
+          "ingredients": "espresso · tonic water · blackberry syrup",
+          "price": "$6"
+        },
+        {
+          "name": "Espresso Aranciata",
+          "ingredients": "espresso · san pelligrino aranciata",
+          "price": "$6"
+        },
+        {
+          "name": "Nitro Cold Brew",
+          "ingredients": "goat house blend · nitrogen",
+          "price": "$5"
+        }
+      ]
+    }
+  ]
+}

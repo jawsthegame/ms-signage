@@ -1,0 +1,426 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Colors */
+  --bg:          #0C0C0C;
+  --text:        #F0F0F0;
+  --text-dim:    #777777;
+  --text-faint:  #666666;
+  --divider:     #1E1E1E;
+  --on-time:     #22C55E;
+  --delayed:     #F59E0B;
+  --cancelled:   #EF4444;
+
+  /* Layout — fluid */
+  --header-h: clamp(48px, 5.5vh,  90px);
+  --right-w:  50vw;
+  --pad-h:    clamp(28px,  3.5vw,  72px);
+
+  /* Font sizes — scale from ~1280px (MacBook 13") to ~3840px (4K) */
+  --fs-ui:            clamp(16px,  0.65vw, 15px);   /* labels, category headers */
+  --fs-clock:         clamp(20px,  1.8vw,  44px);
+  --fs-shop:          clamp(16px,  0.85vw, 20px);
+  --fs-line-name:     clamp(16px,  1.3vw,  28px);
+  --fs-col-header:    clamp(13px,  0.95vw, 20px);
+  --fs-train-time:    clamp(32px,  3.1vw,  74px);
+  --fs-train-dest:    clamp(16px,  1.6vw,  36px);
+  --fs-train-status:  clamp(16px,  1.5vw,  36px);
+  --fs-track-title:   clamp(36px,  3.6vw,  86px);
+  --fs-track-artist:  clamp(18px,  1.8vw,  44px);
+  --fs-track-album:   clamp(13px,  1.2vw,  28px);
+  --fs-spotlight:     clamp(44px,  4.8vw, 112px);
+  --fs-spotlight-desc:clamp(20px,  1.4vw,  34px);
+  --fs-spotlight-price:clamp(26px, 2.6vw,  64px);
+  --fs-right-name:    clamp(22px,  2.0vw,  48px);
+  --fs-right-price:   clamp(22px,  1.7vw,  40px);
+  --fs-right-cat:     clamp(18px,  1.4vw,  32px);
+
+  /* Train time column width */
+  --train-time-col: clamp(120px, 11vw, 250px);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ─────────────────────────────────────── */
+#header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--pad-h);
+  border-bottom: 1px solid var(--divider);
+  z-index: 10;
+  background: var(--bg);
+}
+
+#shop-name {
+  font-size: var(--fs-shop);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #BBBBBB;
+}
+
+#clock {
+  font-size: var(--fs-clock);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Main layout ─────────────────────────────────── */
+#main-layout {
+  position: fixed;
+  inset: 0;
+  top: var(--header-h);
+  display: grid;
+  grid-template-columns: 1fr 1px var(--right-w);
+}
+
+/* ── Left panel ──────────────────────────────────── */
+#left-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.left-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.left-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.left-inner {
+  width: 100%;
+  padding: 0 var(--pad-h);
+}
+
+.slide-label {
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: clamp(20px, 2.5vh, 44px);
+}
+
+/* Larger station label for SEPTA slide */
+#left-septa .slide-label {
+  font-size: clamp(20px, 1.15vw, 26px);
+  margin-bottom: 0;
+}
+
+.septa-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 28px);
+  margin-bottom: clamp(20px, 2.5vh, 44px);
+}
+
+#septa-logo {
+  height: clamp(24px, 2.2vw, 48px);
+  width: auto;
+  opacity: 0.85;
+}
+
+/* ── SEPTA ───────────────────────────────────────── */
+.septa-grid {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.5vh, 56px);
+}
+
+.septa-col-divider { display: none; }
+
+.line-name {
+  font-size: var(--fs-line-name);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: clamp(12px, 1.5vh, 26px);
+}
+
+.train-list { display: flex; flex-direction: column; }
+
+.train-header {
+  display: grid;
+  grid-template-columns: var(--train-time-col) 2fr auto;
+  gap: 0 clamp(12px, 1.5vw, 28px);
+  padding-bottom: clamp(8px, 1vh, 18px);
+  border-bottom: 1px solid var(--divider);
+  margin-bottom: 2px;
+}
+
+.train-header span {
+  font-size: var(--fs-col-header);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.train-row {
+  display: grid;
+  grid-template-columns: var(--train-time-col) 1fr auto;
+  align-items: center;
+  gap: 0 clamp(12px, 1.5vw, 28px);
+  padding: clamp(10px, 1.4vh, 22px) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.train-row:last-child { border-bottom: none; }
+
+.train-time {
+  font-size: var(--fs-train-time);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.train-dest {
+  font-size: var(--fs-train-dest);
+  font-weight: 300;
+  color: var(--text-dim);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.train-status {
+  font-size: var(--fs-train-status);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.train-status.on-time   { color: var(--on-time); }
+.train-status.arriving  { color: var(--text); }
+.train-status.delayed   { color: var(--delayed); }
+.train-status.cancelled { color: var(--cancelled); }
+
+.no-trains {
+  font-size: var(--fs-train-dest);
+  font-weight: 300;
+  color: var(--text-faint);
+  padding: clamp(10px, 1.4vh, 22px) 0;
+}
+
+.error-msg {
+  font-size: var(--fs-train-dest);
+  color: var(--text-faint);
+  font-weight: 300;
+}
+
+/* ── Now Playing ─────────────────────────────────── */
+.nowplaying-inner {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  gap: 0 clamp(28px, 3.5vw, 72px);
+  align-items: center;
+}
+
+#album-art-wrap {
+  width:  clamp(180px, 18vw, 400px);
+  height: clamp(180px, 18vw, 400px);
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #1A1A1A;
+}
+
+#album-art {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+#album-art-placeholder {
+  width: 100%; height: 100%;
+  display: none; background: #1A1A1A;
+}
+
+#track-info { min-width: 0; }
+
+#track-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: var(--fs-track-title);
+  line-height: 1.05;
+  color: var(--text);
+  margin-bottom: clamp(10px, 1.5vh, 28px);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+#track-artist {
+  font-size: var(--fs-track-artist);
+  font-weight: 300;
+  color: var(--text-dim);
+  margin-bottom: clamp(4px, 0.8vh, 14px);
+}
+
+#track-album {
+  font-size: var(--fs-track-album);
+  font-weight: 300;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* ── Spotlight ───────────────────────────────────── */
+#spotlight-name {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: var(--fs-spotlight);
+  line-height: 1.0;
+  color: var(--text);
+  margin-bottom: clamp(12px, 2vh, 36px);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+#spotlight-desc {
+  font-size: var(--fs-spotlight-desc);
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-bottom: clamp(14px, 2.5vh, 40px);
+}
+
+#spotlight-price {
+  font-size: var(--fs-spotlight-price);
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+/* ── Panel divider ───────────────────────────────── */
+#panel-divider { background: var(--divider); }
+
+/* ── Right panel ─────────────────────────────────── */
+#right-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vh, 56px) var(--pad-h);
+}
+
+#specials-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  margin-bottom: clamp(14px, 2vh, 30px);
+}
+
+#specials-header .slide-label {
+  margin-bottom: 0;
+  font-size: clamp(24px, 2.2vw, 52px);
+}
+
+#ms-logo {
+  height: clamp(60px, 7vw, 140px);
+  width: auto;
+  flex-shrink: 0;
+}
+
+#right-specials {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.right-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.right-group + .right-group {
+  margin-top: clamp(10px, 1.5vh, 24px);
+}
+
+.right-category {
+  font-size: var(--fs-right-cat);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-bottom: clamp(4px, 0.6vh, 10px);
+  flex-shrink: 0;
+}
+
+.right-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(8px, 1vw, 20px);
+  flex: 1;
+  border-bottom: 1px solid var(--divider);
+  transition: opacity 0.5s ease;
+}
+
+.right-item:last-child { border-bottom: none; }
+
+.right-item-name {
+  font-size: var(--fs-right-name);
+  font-weight: 300;
+  color: var(--text);
+  transition: color 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.right-item-ingredients {
+  font-size: calc(var(--fs-right-name) * 0.62);
+  font-weight: 300;
+  color: var(--text-faint);
+  transition: color 0.5s ease;
+}
+
+.right-item-price {
+  font-size: var(--fs-right-price);
+  font-weight: 300;
+  color: var(--text-dim);
+  white-space: nowrap;
+  transition: color 0.5s ease;
+}
+
+.right-item.dim .right-item-name        { color: var(--text-faint); }
+.right-item.dim .right-item-ingredients { color: var(--text-faint); }
+.right-item.dim .right-item-price       { color: var(--text-faint); }
+.right-item.highlight .right-item-name        { color: var(--text); }
+.right-item.highlight .right-item-ingredients { color: var(--text-dim); }
+.right-item.highlight .right-item-price       { color: var(--text-dim); }
+
+/* ── Progress bar ────────────────────────────────── */
+#progress-bar {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 1px;
+  background: var(--text-faint);
+  width: 0%;
+  will-change: width;
+}
