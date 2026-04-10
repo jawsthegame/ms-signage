@@ -1,0 +1,20 @@
+{
+  "shopName": "Morning Static @ The Goat House",
+  "loopOrder": ["nowplaying", "septa", "list:teas", "list:syrups"],
+  "slideDuration": {
+    "septa":      15000,
+    "nowplaying": 10000,
+    "featured":   15000,
+    "socials":    10000
+  },
+  "cascade": {
+    "delayPerChar": 32,
+    "minSteps": 3,
+    "maxSteps": 6
+  },
+  "socials": {
+    "platform": "Instagram",
+    "interval": 2,
+    "accounts": ["@morningstatic", "@myvinylundergroundpa", "@goathousecreamery"]
+  }
+}

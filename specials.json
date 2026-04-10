@@ -1,42 +1,27 @@
 {
   "items": [
     {
-      "category": "Hot",
+      "category": "Spring Sequence",
       "drinks": [
         {
-          "name": "Some Latte",
-          "ingredients": "espresso · steamed milk · some syrup",
-          "price": "$5"
+          "name": "🔥 Pink Moon",
+          "ingredients": "chai latte · rose syrup",
+          "price": "6"
         },
         {
-          "name": "Some Latte",
-          "ingredients": "espresso · steamed milk · some syrup",
-          "price": "$5"
+          "name": "🔥 West-End Girls",
+          "ingredients": "earl grey · oat milk · lavender syrup",
+          "price": "5"
         },
         {
-          "name": "Some Latte",
-          "ingredients": "espresso · steamed milk · some syrup",
-          "price": "$5"
-        }
-      ]
-    },
-    {
-      "category": "Cold",
-      "drinks": [
-        {
-          "name": "Blackberry Espresso Tonic",
+          "name": "🧊 good kid, m.A.A.d berry",
           "ingredients": "espresso · tonic water · blackberry syrup",
-          "price": "$6"
+          "price": "4.5"
         },
         {
-          "name": "Espresso Aranciata",
-          "ingredients": "espresso · san pelligrino aranciata",
-          "price": "$6"
-        },
-        {
-          "name": "Nitro Cold Brew",
-          "ingredients": "goat house blend · nitrogen",
-          "price": "$5"
+          "name": "🧊 Lazing on a Sunny Afternoon",
+          "ingredients": "citrus green blend · peach syrup",
+          "price": "4"
         }
       ]
     }

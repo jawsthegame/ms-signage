@@ -1,0 +1,10 @@
+{
+  "title": "Locally Blended Teas",
+  "items": [
+    { "name": "Earl Grey", "description": "black tea • bergamot • vanilla", "price": "" },
+    { "name": "English Breakfast", "description": "black tea", "price": "" },
+    { "name": "Citrus Green", "description": "green tea • citrus • lemongrass", "price": "" },
+    { "name": "Orange Hibiscus", "description": "hibiscus • orange • caffeine-free", "price": "" },
+    { "name": "Mint", "description": "peppermint • caffeine-free", "price": "" }
+  ]
+}

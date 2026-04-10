@@ -12,11 +12,11 @@
 <body>
   <div id="display">
 
-    <!-- Header -->
+    <!-- Header
     <header id="header">
       <span id="shop-name"></span>
       <span id="clock"></span>
-    </header>
+    </header> -->
 
     <!-- Main layout: left rotating | divider | right persistent -->
     <div id="main-layout">
@@ -41,8 +41,13 @@
                 <div class="line-name">West Trenton</div>
                 <div id="tre-trains" class="train-list"></div>
               </div>
+              <div class="septa-col-divider"></div>
+              <div class="septa-col">
+                <div class="line-name">Bus Route 28</div>
+                <div id="bus-28" class="train-list"></div>
+              </div>
             </div>
-            <div id="septa-error" class="error-msg" style="display:none">Train data unavailable</div>
+            <div id="septa-error" class="error-msg" style="display:none">Transit data unavailable</div>
           </div>
         </div>
 
@@ -62,13 +67,19 @@
           </div>
         </div>
 
-        <!-- Featured special spotlight -->
+        <!-- Featured tea list -->
         <div id="left-featured" class="left-slide">
-          <div class="left-inner spotlight-inner">
-            <div id="spotlight-category" class="slide-label"></div>
-            <div id="spotlight-name"></div>
-            <div id="spotlight-desc"></div>
-            <div id="spotlight-price"></div>
+          <div class="left-inner">
+            <div id="featured-title" class="line-name"></div>
+            <div id="featured-list"></div>
+          </div>
+        </div>
+
+        <!-- Socials -->
+        <div id="left-socials" class="left-slide">
+          <div class="left-inner socials-inner">
+            <div id="socials-platform"></div>
+            <div id="socials-accounts"></div>
           </div>
         </div>
 
@@ -79,10 +90,10 @@
 
       <!-- RIGHT: persistent specials -->
       <div id="right-panel">
-        <div id="specials-header">
+        <!--<div id="specials-header">
           <div class="slide-label">Today's Specials</div>
           <img id="ms-logo" src="morning-static-logo.png" alt="Morning Static" onerror="this.style.display='none'">
-        </div>
+        </div>-->
         <div id="right-specials"></div>
       </div>
 

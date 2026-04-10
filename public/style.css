@@ -16,27 +16,27 @@
   --right-w:  50vw;
   --pad-h:    clamp(28px,  3.5vw,  72px);
 
-  /* Font sizes — scale from ~1280px (MacBook 13") to ~3840px (4K) */
-  --fs-ui:            clamp(16px,  0.65vw, 15px);   /* labels, category headers */
-  --fs-clock:         clamp(20px,  1.8vw,  44px);
-  --fs-shop:          clamp(16px,  0.85vw, 20px);
-  --fs-line-name:     clamp(16px,  1.3vw,  28px);
-  --fs-col-header:    clamp(13px,  0.95vw, 20px);
-  --fs-train-time:    clamp(32px,  3.1vw,  74px);
-  --fs-train-dest:    clamp(16px,  1.6vw,  36px);
-  --fs-train-status:  clamp(16px,  1.5vw,  36px);
-  --fs-track-title:   clamp(36px,  3.6vw,  86px);
-  --fs-track-artist:  clamp(18px,  1.8vw,  44px);
-  --fs-track-album:   clamp(13px,  1.2vw,  28px);
-  --fs-spotlight:     clamp(44px,  4.8vw, 112px);
-  --fs-spotlight-desc:clamp(20px,  1.4vw,  34px);
-  --fs-spotlight-price:clamp(26px, 2.6vw,  64px);
-  --fs-right-name:    clamp(22px,  2.0vw,  48px);
-  --fs-right-price:   clamp(22px,  1.7vw,  40px);
-  --fs-right-cat:     clamp(18px,  1.4vw,  32px);
+  /* Font sizes — scale from ~1280px (MacBook 13") through 27" QHD to 4K */
+  --fs-ui:             clamp(14px,  0.75vw,  20px);
+  --fs-clock:          clamp(20px,  1.8vw,   44px);
+  --fs-shop:           clamp(16px,  0.85vw,  20px);
+  --fs-line-name:      clamp(16px,  1.6vw,   40px);
+  --fs-col-header:     clamp(13px,  1.1vw,   26px);
+  --fs-train-time:     clamp(28px,  min(3.2vw, 4.2vh),  92px);
+  --fs-train-dest:     clamp(28px,  2.2vw,   72px);
+  --fs-train-status:   clamp(28px,  2.2vw,   68px);
+  --fs-track-title:    clamp(32px,  3.0vw,   56px);
+  --fs-track-artist:   clamp(18px,  2.5vw,   44px);
+  --fs-track-album:    clamp(14px,  2.5vw,   36px);
+  --fs-spotlight:      clamp(44px,  4.8vw,  112px);
+  --fs-spotlight-desc: clamp(20px,  1.4vw,   34px);
+  --fs-spotlight-price:clamp(26px,  2.6vw,   64px);
+  --fs-right-name:     clamp(46px,  3.0vw,   80px);
+  --fs-right-price:    clamp(32px,  3.0vw,   60px);
+  --fs-right-cat:      clamp(24px,  1.4vw,   40px);
 
-  /* Train time column width */
-  --train-time-col: clamp(120px, 11vw, 250px);
+  /* Train time column — must fit the full time display at max font size */
+  --train-time-col: clamp(160px, 20vw, 520px);
 }
 
 html, body {
@@ -80,11 +80,9 @@ html, body {
 
 /* ── Main layout ─────────────────────────────────── */
 #main-layout {
-  position: fixed;
-  inset: 0;
-  top: var(--header-h);
   display: grid;
   grid-template-columns: 1fr 1px var(--right-w);
+  height: 100vh;
 }
 
 /* ── Left panel ──────────────────────────────────── */
@@ -100,7 +98,8 @@ html, body {
   transition: opacity 0.8s ease;
   pointer-events: none;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  overflow: hidden;
 }
 
 .left-slide.active {
@@ -110,7 +109,7 @@ html, body {
 
 .left-inner {
   width: 100%;
-  padding: 0 var(--pad-h);
+  padding: clamp(24px, 3vh, 56px) var(--pad-h) 0;
 }
 
 .slide-label {
@@ -118,13 +117,14 @@ html, body {
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: clamp(20px, 2.5vh, 44px);
+  color: var(--text-dim);
+  margin-bottom: clamp(22px, 2.7vh, 48px);
 }
 
-/* Larger station label for SEPTA slide */
+/* Station label matches right-panel category header */
 #left-septa .slide-label {
-  font-size: clamp(20px, 1.15vw, 26px);
+  font-size: var(--fs-right-cat);
+  color: #A78BFA;
   margin-bottom: 0;
 }
 
@@ -132,7 +132,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.5vw, 28px);
-  margin-bottom: clamp(20px, 2.5vh, 44px);
+  margin-bottom: clamp(24px, 3.5vh, 56px);
 }
 
 #septa-logo {
@@ -146,6 +146,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: clamp(24px, 3.5vh, 56px);
+  container-type: inline-size; /* enables cqi units for children */
 }
 
 .septa-col-divider { display: none; }
@@ -156,7 +157,7 @@ html, body {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: clamp(12px, 1.5vh, 26px);
+  margin-bottom: clamp(8px, 1vh, 18px);
 }
 
 .train-list { display: flex; flex-direction: column; }
@@ -175,7 +176,7 @@ html, body {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-dim);
 }
 
 .train-row {
@@ -183,7 +184,7 @@ html, body {
   grid-template-columns: var(--train-time-col) 1fr auto;
   align-items: center;
   gap: 0 clamp(12px, 1.5vw, 28px);
-  padding: clamp(10px, 1.4vh, 22px) 0;
+  padding: clamp(6px, 0.9vh, 16px) 0;
   border-bottom: 1px solid var(--divider);
 }
 
@@ -196,21 +197,35 @@ html, body {
   letter-spacing: -0.02em;
   color: var(--text);
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .train-dest {
-  font-size: var(--fs-train-dest);
+  font-size: clamp(20px, 3.5cqi, 56px);
   font-weight: 300;
   color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.dest-arrow {
+  flex-shrink: 0;
+  color: var(--text-dim);
 }
 
 .train-status {
-  font-size: var(--fs-train-status);
+  font-size: clamp(20px, 3.5cqi, 52px);
   font-weight: 500;
   letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .train-status.on-time   { color: var(--on-time); }
@@ -221,17 +236,20 @@ html, body {
 .no-trains {
   font-size: var(--fs-train-dest);
   font-weight: 300;
-  color: var(--text-faint);
+  color: var(--text-dim);
   padding: clamp(10px, 1.4vh, 22px) 0;
 }
 
 .error-msg {
   font-size: var(--fs-train-dest);
-  color: var(--text-faint);
+  color: var(--text-dim);
   font-weight: 300;
 }
 
 /* ── Now Playing ─────────────────────────────────── */
+#left-nowplaying {
+  align-items: center;
+}
 .nowplaying-inner {
   display: grid !important;
   grid-template-columns: auto 1fr;
@@ -240,8 +258,9 @@ html, body {
 }
 
 #album-art-wrap {
-  width:  clamp(180px, 18vw, 400px);
-  height: clamp(180px, 18vw, 400px);
+  /*width:  clamp(400px, 20vw, 700px);*/
+  width: 100%;
+  height: clamp(400px, 20vw, 700px);
   flex-shrink: 0;
   overflow: hidden;
   background: #1A1A1A;
@@ -264,7 +283,7 @@ html, body {
   font-size: var(--fs-track-title);
   line-height: 1.05;
   color: var(--text);
-  margin-bottom: clamp(10px, 1.5vh, 28px);
+  margin-bottom: clamp(10px, 1.5vh, 36px);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -281,7 +300,7 @@ html, body {
 #track-album {
   font-size: var(--fs-track-album);
   font-weight: 300;
-  color: var(--text-faint);
+  color: var(--text-dim);
   font-style: italic;
 }
 
@@ -289,13 +308,9 @@ html, body {
 #spotlight-name {
   font-family: 'DM Serif Display', Georgia, serif;
   font-size: var(--fs-spotlight);
-  line-height: 1.0;
+  line-height: 1.05;
   color: var(--text);
   margin-bottom: clamp(12px, 2vh, 36px);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 #spotlight-desc {
@@ -366,7 +381,7 @@ html, body {
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: #A78BFA;
   padding-bottom: clamp(4px, 0.6vh, 10px);
   flex-shrink: 0;
 }
@@ -379,6 +394,7 @@ html, body {
   flex: 1;
   border-bottom: 1px solid var(--divider);
   transition: opacity 0.5s ease;
+  padding: 2vh 0px;
 }
 
 .right-item:last-child { border-bottom: none; }
@@ -394,33 +410,260 @@ html, body {
 }
 
 .right-item-ingredients {
-  font-size: calc(var(--fs-right-name) * 0.62);
+  font-size: calc(var(--fs-right-name) * 0.7);
   font-weight: 300;
-  color: var(--text-faint);
+  color: var(--text-dim);
   transition: color 0.5s ease;
 }
 
 .right-item-price {
   font-size: var(--fs-right-price);
   font-weight: 300;
-  color: var(--text-dim);
+  color: var(--text);
   white-space: nowrap;
   transition: color 0.5s ease;
 }
 
-.right-item.dim .right-item-name        { color: var(--text-faint); }
-.right-item.dim .right-item-ingredients { color: var(--text-faint); }
-.right-item.dim .right-item-price       { color: var(--text-faint); }
+.right-item.dim .right-item-name        { color: var(--text-dim); }
+.right-item.dim .right-item-ingredients { color: var(--text-dim); }
+.right-item.dim .right-item-price       { color: var(--text-dim); }
 .right-item.highlight .right-item-name        { color: var(--text); }
 .right-item.highlight .right-item-ingredients { color: var(--text-dim); }
 .right-item.highlight .right-item-price       { color: var(--text-dim); }
+
+/* ── Featured list slide (left panel) ───────────── */
+
+/* Stretch to fill height instead of centering like other slides */
+#left-featured {
+  align-items: stretch;
+}
+
+#left-featured .left-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top:    clamp(24px, 3vh, 56px);
+  padding-bottom: clamp(24px, 3vh, 56px);
+}
+
+/* Title matches right-panel category header */
+#featured-title {
+  font-size: var(--fs-right-cat);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #A78BFA;
+  flex-shrink: 0;
+  padding-bottom: clamp(4px, 0.6vh, 10px);
+  margin-bottom: clamp(14px, 2vh, 30px);
+}
+
+/* List fills remaining height; items share it equally */
+#featured-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(8px, 1vw, 20px);
+  flex: 1;
+  border-bottom: 1px solid var(--divider);
+}
+
+.featured-item:last-child { border-bottom: none; }
+
+.featured-item-name {
+  font-size: var(--fs-right-name);
+  font-weight: 300;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.featured-item-desc {
+  font-size: calc(var(--fs-right-name) * 0.7);
+  font-weight: 300;
+  color: var(--text-dim);
+}
+
+.featured-item-price {
+  font-size: var(--fs-right-price);
+  font-weight: 300;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ── Socials slide ───────────────────────────────── */
+#left-socials {
+  align-items: stretch;
+}
+
+#left-socials .left-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: clamp(32px, 5vh, 80px);
+}
+
+#socials-platform {
+  font-size: var(--fs-right-cat);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #A78BFA;
+}
+
+.socials-account {
+  font-size: clamp(32px, 3.8vw, 88px);
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid var(--divider);
+  padding-bottom: clamp(16px, 2.5vh, 40px);
+}
+
+.socials-account:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ── Split-flap ──────────────────────────────────── */
+.flap-display {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.3vw, 8px);
+}
+
+/* Outer tile: just dimensions + shadow, no background (halves supply that) */
+.flap-char {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.78em;       /* fixed — every digit tile is identical width */
+  height: 1.25em;
+  flex-shrink: 0;
+  border-radius: 4px;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(0,0,0,0.4);
+  font-variant-numeric: tabular-nums;
+  overflow: visible;
+}
+
+/* Center split line — sits above all halves */
+.flap-char::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0,0,0,0.92);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Half-panel wrappers ─────────────────────────── */
+.fc-half {
+  position: absolute;
+  left: 0; right: 0;
+  overflow: hidden;
+  background: #1C1C1C;
+}
+
+.fc-top { top: 0;    height: 50%; border-radius: 4px 4px 0 0; }
+.fc-bot { bottom: 0; height: 50%; border-radius: 0 0 4px 4px; }
+
+/* The falling flap: covers the top half, falls forward to reveal new char */
+.fc-flap {
+  top: 0;
+  height: 50%;
+  border-radius: 4px 4px 0 0;
+  transform-origin: bottom center;
+  z-index: 5;
+  background: #232323; /* slightly lighter — catches ambient light */
+}
+
+/* Subtle shadow that deepens as the flap falls */
+.fc-flap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 20%, rgba(0,0,0,0.35) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Character text: sized to full tile height, anchored so the char is centered */
+.fc-half .fc-txt {
+  position: absolute;
+  left: 0; right: 0;
+  height: 200%;        /* = full tile height relative to half-wrapper */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Top & flap: text anchors to wrapper bottom → top half of char is visible */
+.fc-top  .fc-txt,
+.fc-flap .fc-txt { top: 0; }
+
+/* Bottom: text anchors to wrapper top → bottom half of char is visible */
+.fc-bot .fc-txt { bottom: 0; }
+
+/* ── Fall animation ──────────────────────────────── */
+@keyframes fc-fall {
+  0%   { transform: perspective(160px) rotateX(0deg); }
+  100% { transform: perspective(160px) rotateX(90deg); }
+}
+
+.fc-flap.fc-falling {
+  animation: fc-fall 0.11s cubic-bezier(0.4, 0, 1, 0.6) forwards;
+}
+
+/* ── Word flap (full card, used for destinations / status words) ── */
+.flap-word {
+  min-width: unset;
+  width: auto;
+  padding: 0 0.25em;
+  letter-spacing: 0.02em;
+  background: #1C1C1C;
+}
+
+@keyframes flap-flip {
+  0%   { transform: perspective(400px) rotateX(-75deg); opacity: 0.1; }
+  55%  { opacity: 1; }
+  100% { transform: perspective(400px) rotateX(0deg); opacity: 1; }
+}
+
+.flap-anim {
+  animation: flap-flip 0.15s cubic-bezier(0.2, 0.8, 0.35, 1);
+  transform-origin: center top;
+}
+
+/* Separators (colon, space) — no card */
+.flap-sep {
+  background: transparent;
+  box-shadow: none;
+  width: 0.28em;   /* fixed narrow gap, overrides the digit fixed width */
+}
+.flap-sep::after { display: none; }
 
 /* ── Progress bar ────────────────────────────────── */
 #progress-bar {
   position: fixed;
   bottom: 0; left: 0;
-  height: 1px;
-  background: var(--text-faint);
+  height: 5px;
+  background: var(--text-dim);
   width: 0%;
   will-change: width;
 }
