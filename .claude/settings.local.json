@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(xargs kill:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(MOVES\" headline, waveform texture bg, Bebas Neue handles with magenta @:*)",
+      "Bash(rm /Users/tom/repos/signage_claude/.git/index.lock)",
+      "Bash(git push:*)"
+    ]
+  }
+}

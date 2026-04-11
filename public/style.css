@@ -121,22 +121,32 @@ html, body {
   margin-bottom: clamp(22px, 2.7vh, 48px);
 }
 
-/* Station label matches right-panel category header */
+/* Station header — matches category header style, keeps purple + logo */
+.septa-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 24px);
+  background: #080408;
+  padding: clamp(14px, 2.5vh, 36px) var(--pad-h);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  margin-bottom: clamp(24px, 3.5vh, 52px);
+  margin-left: calc(-1 * var(--pad-h));
+  margin-right: calc(-1 * var(--pad-h));
+  margin-top: calc(-1 * clamp(24px, 3vh, 56px));
+}
+
 #left-septa .slide-label {
-  font-size: var(--fs-right-cat);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vh, 58px);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
   color: #A78BFA;
   margin-bottom: 0;
 }
 
-.septa-header {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.5vw, 28px);
-  margin-bottom: clamp(24px, 3.5vh, 56px);
-}
-
 #septa-logo {
-  height: clamp(24px, 2.2vw, 48px);
+  height: clamp(22px, 3vh, 42px);
   width: auto;
   opacity: 0.85;
 }
@@ -205,7 +215,7 @@ html, body {
 .train-dest {
   font-size: clamp(20px, 3.5cqi, 56px);
   font-weight: 300;
-  color: var(--text-dim);
+  color: #E8C84A;
   display: flex;
   align-items: center;
   gap: 0.3em;
@@ -215,7 +225,8 @@ html, body {
 
 .dest-arrow {
   flex-shrink: 0;
-  color: var(--text-dim);
+  color: #E8C84A;
+  opacity: 0.6;
 }
 
 .train-status {

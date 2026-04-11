@@ -1,8 +1,8 @@
 {
   "shopName": "Morning Static @ The Goat House",
-  "loopOrder": ["nowplaying", "septa", "list:teas", "list:syrups"],
+  "loopOrder": ["nowplaying", "septa", "list:syrups"],
   "slideDuration": {
-    "septa":      15000,
+    "septa":      20000,
     "nowplaying": 10000,
     "featured":   15000,
     "socials":    10000
