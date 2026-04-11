@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Static — Spring Sequence Posters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* ── Stage ─────────────────────────────────── */
+    .stage {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Poster base ────────────────────────────── */
+    .poster {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .poster.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Paper grain via SVG data-URL overlay */
+    .poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 80;
+      pointer-events: none;
+      opacity: 0.055;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+    }
+
+    /* Ink bleed / vignette */
+    .poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 79;
+      pointer-events: none;
+      box-shadow: inset 0 0 18vw rgba(0,0,0,0.45);
+    }
+
+    /* ── Registration marks ─────────────────────── */
+    .reg {
+      position: absolute;
+      width: 28px; height: 28px;
+      z-index: 90;
+      opacity: 0.28;
+    }
+    .reg::before, .reg::after { content: ''; position: absolute; background: currentColor; }
+    .reg::before { width: 1px; height: 100%; left: 50%; transform: translateX(-50%); }
+    .reg::after  { height: 1px; width: 100%; top: 50%;  transform: translateY(-50%); }
+    .reg span {
+      position: absolute;
+      inset: 5px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+    }
+    .reg.tl { top: 18px;    left: 18px;    }
+    .reg.tr { top: 18px;    right: 18px;   }
+    .reg.bl { bottom: 18px; left: 18px;    }
+    .reg.br { bottom: 18px; right: 18px;   }
+
+    /* ── Inner layout ───────────────────────────── */
+    .pi {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(20px, 4.5vh, 64px) clamp(28px, 5vw, 88px);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      margin-bottom: clamp(4px, 0.8vh, 12px);
+    }
+
+    .shop {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(10px, 0.75vw, 15px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .badge {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(9px, 0.65vw, 13px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border: 1px solid currentColor;
+      opacity: 0.6;
+    }
+
+    .category {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(9px, 0.7vw, 13px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: clamp(8px, 1.5vh, 20px);
+      flex-shrink: 0;
+    }
+
+    /* Main content area: name left, graphic right */
+    .body {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: 4vw;
+      min-height: 0;
+    }
+
+    .text-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 12.5vw, 210px);
+      line-height: 0.88;
+      letter-spacing: 0.025em;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      height: 3px;
+      margin: clamp(10px, 1.8vh, 28px) 0;
+      flex-shrink: 0;
+    }
+
+    .ingredients {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(11px, 1.1vw, 20px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      flex-shrink: 0;
+      line-height: 1.6;
+    }
+
+    .price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(42px, 6.5vw, 108px);
+      letter-spacing: 0.06em;
+      margin-top: clamp(6px, 1.2vh, 18px);
+      flex-shrink: 0;
+    }
+
+    .graphic-col {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      flex-shrink: 0;
+      padding-bottom: clamp(8px, 1.5vh, 24px);
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-shrink: 0;
+      margin-top: clamp(8px, 1.2vh, 18px);
+      opacity: 0.38;
+    }
+    .footer span {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(8px, 0.6vw, 12px);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+
+    /* ════════════════════════════════════════════
+       P1 — PINK MOON
+       Paper: #180812   Ink1: #DC1868 (magenta)   Ink2: #EFE6D4 (cream)
+    ════════════════════════════════════════════ */
+    .p1 { background: #180812; color: #EFE6D4; }
+    .p1 .reg  { color: #DC1868; }
+    .p1 .rule { background: #DC1868; }
+    .p1 .shop { color: #DC1868; opacity: 0.75; }
+    .p1 .name {
+      color: #EFE6D4;
+      text-shadow: 5px 5px 0 #DC1868, -2px -2px 0 rgba(220,24,104,0.3);
+    }
+    .p1 .price { color: #DC1868; }
+
+    /* Crescent moon */
+    .moon {
+      position: relative;
+      width: clamp(160px, 22vw, 380px);
+      height: clamp(160px, 22vw, 380px);
+      border-radius: 50%;
+      background: #DC1868;
+      flex-shrink: 0;
+    }
+    .moon::after {
+      content: '';
+      position: absolute;
+      top: -6%;
+      left: 16%;
+      width: 88%;
+      height: 88%;
+      border-radius: 50%;
+      background: #180812;
+      /* slight mis-registration on the cutout */
+      box-shadow: -3px -2px 0 rgba(220,24,104,0.35);
+    }
+
+
+    /* ════════════════════════════════════════════
+       P2 — WEST-END GIRLS
+       Paper: #0C0A1E   Ink1: #DDAA22 (amber)   Ink2: #A888DC (lavender)
+    ════════════════════════════════════════════ */
+    .p2 { background: #0C0A1E; color: #DDAA22; }
+    .p2 .reg  { color: #A888DC; }
+    .p2 .rule { background: #A888DC; }
+    .p2 .shop { color: #A888DC; opacity: 0.75; }
+    .p2 .badge { color: #A888DC; }
+    .p2 .ingredients { color: #A888DC; }
+    .p2 .name {
+      color: #DDAA22;
+      text-shadow: 5px 5px 0 #A888DC, -2px -1px 0 rgba(168,136,220,0.25);
+    }
+    .p2 .price { color: #A888DC; }
+
+    /* Concentric rects */
+    .rects {
+      position: relative;
+      width: clamp(140px, 18vw, 320px);
+      height: clamp(140px, 18vw, 320px);
+      flex-shrink: 0;
+    }
+    .rects span {
+      position: absolute;
+      border: clamp(3px, 0.35vw, 6px) solid #DDAA22;
+      border-radius: 2px;
+    }
+    .rects span:nth-child(1) { inset: 0%; }
+    .rects span:nth-child(2) { inset: 12%; border-color: #A888DC; }
+    .rects span:nth-child(3) { inset: 24%; }
+    .rects span:nth-child(4) { inset: 36%; border-color: #A888DC; }
+    .rects span:nth-child(5) { inset: 48%; }
+    .rects span:nth-child(6) { inset: 60%; border-color: #A888DC; }
+    /* mis-registration offset on even spans */
+    .rects span:nth-child(2n) { transform: translate(4px, 5px); }
+
+
+    /* ════════════════════════════════════════════
+       P3 — GOOD KID, m.A.A.d BERRY
+       Paper: #070707   Ink1: #E8D400 (yellow)   Ink2: #6C1EC0 (purple)
+    ════════════════════════════════════════════ */
+    .p3 { background: #070707; color: #E8D400; }
+    .p3 .reg  { color: #6C1EC0; }
+    .p3 .rule { background: #6C1EC0; }
+    .p3 .shop { color: #6C1EC0; opacity: 0.85; }
+    .p3 .badge { color: #6C1EC0; }
+    .p3 .ingredients { color: #E8D400; }
+    .p3 .name {
+      color: #E8D400;
+      text-shadow: 6px 6px 0 #6C1EC0, -3px -2px 0 rgba(108,30,192,0.4);
+    }
+    .p3 .price { color: #6C1EC0; }
+    .p3 .footer { color: #6C1EC0; }
+
+    /* Stars cluster */
+    .stars {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(90px, 16vw, 280px);
+      line-height: 0.85;
+      color: #6C1EC0;
+      opacity: 0.55;
+      letter-spacing: -0.05em;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .stars .row2 {
+      font-size: clamp(50px, 9vw, 160px);
+      opacity: 0.35;
+      letter-spacing: 0.1em;
+      color: #E8D400;
+    }
+
+
+    /* ════════════════════════════════════════════
+       P4 — LAZING ON A SUNNY AFTERNOON
+       Paper: #EDE2BC   Ink1: #2E4E28 (forest green)   Ink2: #CF5828 (coral)
+    ════════════════════════════════════════════ */
+    .p4 { background: #EDE2BC; color: #2E4E28; }
+    .p4 .reg  { color: #CF5828; }
+    .p4 .rule { background: #CF5828; }
+    .p4 .shop { color: #CF5828; opacity: 0.8; }
+    .p4 .badge { color: #CF5828; }
+    .p4 .ingredients { color: #2E4E28; }
+    .p4 .name {
+      color: #2E4E28;
+      text-shadow: 5px 5px 0 #CF5828, -2px -2px 0 rgba(207,88,40,0.2);
+    }
+    .p4 .price { color: #CF5828; }
+
+    /* Sun graphic */
+    .sun-wrap {
+      position: relative;
+      width: clamp(150px, 20vw, 360px);
+      height: clamp(150px, 20vw, 360px);
+      flex-shrink: 0;
+    }
+    .sun-core {
+      position: absolute;
+      inset: 22%;
+      border-radius: 50%;
+      background: #CF5828;
+    }
+    .sun-ray {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: clamp(2px, 0.25vw, 5px);
+      width: 50%;
+      background: #CF5828;
+      transform-origin: 0 50%;
+      margin-top: calc(clamp(2px, 0.25vw, 5px) / -2);
+    }
+
+    /* ════════════════════════════════════════════
+       P5 — STACKED CO-HEADLINER (right panel)
+       4 equal rows, all co-billed, ingredients prominent
+    ════════════════════════════════════════════ */
+    .p5 { background: #080408; }
+    .p5 .reg { color: rgba(255,255,255,0.22); }
+
+    .co-grid {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr auto;
+      gap: 2px;
+      background: #080408;
+    }
+
+    .co-cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: clamp(14px, 2.2vh, 36px) clamp(24px, 3vw, 56px);
+      overflow: hidden;
+    }
+
+    .co-watermark {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.055;
+    }
+
+    .co-badge {
+      position: absolute;
+      top: clamp(10px, 1.3vh, 20px);
+      right: clamp(14px, 1.8vw, 30px);
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(7px, 0.52vw, 10px);
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border: 1px solid currentColor;
+      opacity: 0.5;
+      z-index: 3;
+    }
+
+    /* Drink name — full width, wraps naturally */
+    .co-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 5.6vh, 92px);
+      line-height: 0.88;
+      letter-spacing: 0.025em;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .co-rule {
+      height: 2px;
+      margin: clamp(8px, 1.2vh, 18px) 0;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Ingredients left, price right — share one line */
+    .co-bottom {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5em;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .co-ingredients {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(14px, 2vh, 32px);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      line-height: 1.5;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .co-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px, 5vh, 82px);
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .co-footer {
+      background: #080408;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 0;
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(6px, 0.46vw, 9px);
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+    }
+
+    /* ── Cell color themes ── */
+    .co-c1 { background: #1A0A14; }
+    .co-c1 .co-name        { color: #F0E8D8; text-shadow: 3px 3px 0 #DC1868; }
+    .co-c1 .co-rule        { background: #DC1868; }
+    .co-c1 .co-ingredients { color: #F0E8D8; opacity: 0.82; }
+    .co-c1 .co-price       { color: #DC1868; }
+    .co-c1 .co-badge       { color: #DC1868; }
+
+    .co-c2 { background: #0C0A1E; }
+    .co-c2 .co-name        { color: #DDAA22; text-shadow: 3px 3px 0 #A888DC; }
+    .co-c2 .co-rule        { background: #A888DC; }
+    .co-c2 .co-ingredients { color: #A888DC; opacity: 0.88; }
+    .co-c2 .co-price       { color: #A888DC; }
+    .co-c2 .co-badge       { color: #A888DC; }
+
+    .co-c3 { background: #070707; }
+    .co-c3 .co-name        { color: #E8D400; text-shadow: 4px 4px 0 #6C1EC0; }
+    .co-c3 .co-rule        { background: #6C1EC0; }
+    .co-c3 .co-ingredients { color: #E8D400; opacity: 0.82; }
+    .co-c3 .co-price       { color: #6C1EC0; }
+    .co-c3 .co-badge       { color: #6C1EC0; }
+
+    .co-c4 { background: #EDE2BC; }
+    .co-c4 .co-name        { color: #2E4E28; text-shadow: 3px 3px 0 #CF5828; }
+    .co-c4 .co-rule        { background: #CF5828; }
+    .co-c4 .co-ingredients { color: #2E4E28; opacity: 0.82; }
+    .co-c4 .co-price       { color: #CF5828; }
+    .co-c4 .co-badge       { color: #CF5828; }
+
+    /* ── Progress bar ───────────────────────────── */
+    .progress-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: rgba(128,128,128,0.15);
+      z-index: 200;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ────────────────────────────────────────────────
+       POSTER 1 — PINK MOON
+  ─────────────────────────────────────────────────── -->
+  <div class="poster p1 active">
+    <span class="reg tl"><span></span></span>
+    <span class="reg tr"><span></span></span>
+    <span class="reg bl"><span></span></span>
+    <span class="reg br"><span></span></span>
+    <div class="pi">
+      <div class="top-bar">
+        <span class="shop">Morning Static</span>
+        <span class="badge">● Hot</span>
+      </div>
+      <div class="category">Spring Sequence — Limited Special</div>
+      <div class="body">
+        <div class="text-col">
+          <div class="name">Pink<br>Moon</div>
+          <div class="rule"></div>
+          <div class="ingredients">Chai Latte<br>Rose Syrup</div>
+          <div class="price">$6</div>
+        </div>
+        <div class="graphic-col">
+          <div class="moon"></div>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Spring Sequence · 2025</span>
+        <span>Morning Static · Elkins Park, PA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────
+       POSTER 2 — WEST-END GIRLS
+  ─────────────────────────────────────────────────── -->
+  <div class="poster p2">
+    <span class="reg tl"><span></span></span>
+    <span class="reg tr"><span></span></span>
+    <span class="reg bl"><span></span></span>
+    <span class="reg br"><span></span></span>
+    <div class="pi">
+      <div class="top-bar">
+        <span class="shop">Morning Static</span>
+        <span class="badge">● Hot</span>
+      </div>
+      <div class="category">Spring Sequence — Limited Special</div>
+      <div class="body">
+        <div class="text-col">
+          <div class="name">West-<br>End<br>Girls</div>
+          <div class="rule"></div>
+          <div class="ingredients">Earl Grey · Oat Milk<br>Lavender Syrup</div>
+          <div class="price">$5</div>
+        </div>
+        <div class="graphic-col">
+          <div class="rects">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Spring Sequence · 2025</span>
+        <span>Morning Static · Elkins Park, PA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────
+       POSTER 3 — GOOD KID, m.A.A.d BERRY
+  ─────────────────────────────────────────────────── -->
+  <div class="poster p3">
+    <span class="reg tl"><span></span></span>
+    <span class="reg tr"><span></span></span>
+    <span class="reg bl"><span></span></span>
+    <span class="reg br"><span></span></span>
+    <div class="pi">
+      <div class="top-bar">
+        <span class="shop">Morning Static</span>
+        <span class="badge">❄ Iced</span>
+      </div>
+      <div class="category">Spring Sequence — Limited Special</div>
+      <div class="body">
+        <div class="text-col">
+          <div class="name" style="font-size:clamp(58px,9.5vw,162px)">Good Kid<br>m.A.A.d<br>Berry</div>
+          <div class="rule"></div>
+          <div class="ingredients">Espresso · Tonic Water<br>Blackberry Syrup</div>
+          <div class="price">$4.50</div>
+        </div>
+        <div class="graphic-col">
+          <div class="stars">
+            <div>★★</div>
+            <div class="row2">★ ★ ★</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Spring Sequence · 2025</span>
+        <span>Morning Static · Elkins Park, PA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────
+       POSTER 4 — LAZING ON A SUNNY AFTERNOON
+  ─────────────────────────────────────────────────── -->
+  <div class="poster p4">
+    <span class="reg tl"><span></span></span>
+    <span class="reg tr"><span></span></span>
+    <span class="reg bl"><span></span></span>
+    <span class="reg br"><span></span></span>
+    <div class="pi">
+      <div class="top-bar">
+        <span class="shop">Morning Static</span>
+        <span class="badge">❄ Iced</span>
+      </div>
+      <div class="category">Spring Sequence — Limited Special</div>
+      <div class="body">
+        <div class="text-col">
+          <div class="name" style="font-size:clamp(50px,8vw,136px)">Lazing<br>on a<br>Sunny<br>Afternoon</div>
+          <div class="rule"></div>
+          <div class="ingredients">Citrus Green Blend<br>Peach Syrup</div>
+          <div class="price">$4</div>
+        </div>
+        <div class="graphic-col">
+          <div class="sun-wrap" id="sun">
+            <div class="sun-core"></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Spring Sequence · 2025</span>
+        <span>Morning Static · Elkins Park, PA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────
+       POSTER 5 — CO-HEADLINER 2×2 GRID
+  ─────────────────────────────────────────────────── -->
+  <div class="poster p5">
+    <span class="reg tl"><span></span></span>
+    <span class="reg tr"><span></span></span>
+    <span class="reg bl"><span></span></span>
+    <span class="reg br"><span></span></span>
+    <div class="co-grid">
+
+      <!-- ── Pink Moon ── -->
+      <div class="co-cell co-c1">
+        <div class="co-badge">● Hot</div>
+        <div class="co-watermark" style="width:55%;padding-bottom:55%;border-radius:50%;background:#DC1868;position:absolute;top:-15%;right:-8%;">
+          <div style="position:absolute;top:-8%;left:18%;width:90%;height:90%;border-radius:50%;background:#1A0A14;"></div>
+        </div>
+        <div class="co-name">Pink Moon</div>
+        <div class="co-rule"></div>
+        <div class="co-bottom">
+          <div class="co-ingredients">Chai Latte · Rose Syrup</div>
+          <div class="co-price">$6</div>
+        </div>
+      </div>
+
+      <!-- ── West-End Girls ── -->
+      <div class="co-cell co-c2">
+        <div class="co-badge">● Hot</div>
+        <div class="co-watermark rects" style="width:32%;padding-bottom:32%;position:absolute;top:8%;right:5%;">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="co-name">West-End Girls</div>
+        <div class="co-rule"></div>
+        <div class="co-bottom">
+          <div class="co-ingredients">Earl Grey · Oat Milk · Lavender Syrup</div>
+          <div class="co-price">$5</div>
+        </div>
+      </div>
+
+      <!-- ── Good Kid, m.A.A.d Berry ── -->
+      <div class="co-cell co-c3">
+        <div class="co-badge">❄ Iced</div>
+        <div class="co-watermark" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(50px,9vw,160px);position:absolute;top:0%;right:3%;line-height:0.85;color:#6C1EC0;">★★</div>
+        <div class="co-name">Good Kid, m.A.A.d Berry</div>
+        <div class="co-rule"></div>
+        <div class="co-bottom">
+          <div class="co-ingredients">Espresso · Tonic Water · Blackberry Syrup</div>
+          <div class="co-price">$4.50</div>
+        </div>
+      </div>
+
+      <!-- ── Lazing on a Sunny Afternoon ── -->
+      <div class="co-cell co-c4">
+        <div class="co-badge">❄ Iced</div>
+        <div class="co-watermark sun-wrap" id="sun2" style="width:30%;padding-bottom:30%;position:absolute;top:-8%;right:-2%;">
+          <div class="sun-core" style="background:#CF5828;"></div>
+        </div>
+        <div class="co-name">Lazing on a Sunny Afternoon</div>
+        <div class="co-rule"></div>
+        <div class="co-bottom">
+          <div class="co-ingredients">Citrus Green Blend · Peach Syrup</div>
+          <div class="co-price">$4</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="co-footer">Morning Static &nbsp;·&nbsp; Spring Sequence &nbsp;·&nbsp; Elkins Park, PA &nbsp;·&nbsp; 2025</div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+</div>
+
+<script>
+  // Generate sun rays (p4 full-bleed + p5 watermark)
+  ['sun', 'sun2'].forEach(id => {
+    const s = document.getElementById(id);
+    if (!s) return;
+    for (let i = 0; i < 12; i++) {
+      const r = document.createElement('div');
+      r.className = 'sun-ray';
+      r.style.transform = `rotate(${i * 30}deg)`;
+      s.appendChild(r);
+    }
+  });
+
+  // Slideshow
+  const posters  = document.querySelectorAll('.poster');
+  const progFill = document.getElementById('prog');
+  const DURATION = 9000;
+  let current = 0, start = null;
+
+  function next() {
+    posters[current].classList.remove('active');
+    current = (current + 1) % posters.length;
+    posters[current].classList.add('active');
+    start = null;
+  }
+
+  function tick(now) {
+    if (!start) start = now;
+    const pct = Math.min((now - start) / DURATION * 100, 100);
+    progFill.style.width = pct + '%';
+    if (pct >= 100) next();
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+
+  // Click to advance
+  document.querySelector('.stage').addEventListener('click', next);
+</script>
+</body>
+</html>

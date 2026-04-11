@@ -22,7 +22,7 @@
   --fs-shop:           clamp(16px,  0.85vw,  20px);
   --fs-line-name:      clamp(16px,  1.6vw,   40px);
   --fs-col-header:     clamp(13px,  1.1vw,   26px);
-  --fs-train-time:     clamp(28px,  min(3.2vw, 4.2vh),  92px);
+  --fs-train-time:     clamp(28px,  min(4.2vw, 5.2vh),  102px);
   --fs-train-dest:     clamp(28px,  2.2vw,   72px);
   --fs-train-status:   clamp(28px,  2.2vw,   68px);
   --fs-track-title:    clamp(32px,  3.0vw,   56px);
@@ -331,207 +331,385 @@ html, body {
 /* ── Panel divider ───────────────────────────────── */
 #panel-divider { background: var(--divider); }
 
-/* ── Right panel ─────────────────────────────────── */
+/* ── Right panel — silk screen poster stack ──────── */
 #right-panel {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(24px, 3vh, 56px) var(--pad-h);
-}
-
-#specials-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  margin-bottom: clamp(14px, 2vh, 30px);
-}
-
-#specials-header .slide-label {
-  margin-bottom: 0;
-  font-size: clamp(24px, 2.2vw, 52px);
-}
-
-#ms-logo {
-  height: clamp(60px, 7vw, 140px);
-  width: auto;
-  flex-shrink: 0;
+  position: relative;
+  padding: 0;
 }
 
 #right-specials {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.right-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.right-group + .right-group {
-  margin-top: clamp(10px, 1.5vh, 24px);
-}
-
-.right-category {
-  font-size: var(--fs-right-cat);
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #A78BFA;
-  padding-bottom: clamp(4px, 0.6vh, 10px);
-  flex-shrink: 0;
-}
-
-.right-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: clamp(8px, 1vw, 20px);
-  flex: 1;
-  border-bottom: 1px solid var(--divider);
-  transition: opacity 0.5s ease;
-  padding: 2vh 0px;
-}
-
-.right-item:last-child { border-bottom: none; }
-
-.right-item-name {
-  font-size: var(--fs-right-name);
-  font-weight: 300;
-  color: var(--text);
-  transition: color 0.5s ease;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  background: #080408;
+}
+
+/* Category header strip */
+.right-category-header {
+  flex-shrink: 0;
+  background: #080408;
+  padding: clamp(14px, 2.5vh, 36px) clamp(22px, 3vw, 52px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vh, 58px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+/* One poster strip per drink */
+.right-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(14px, 2.2vh, 36px) clamp(22px, 3vw, 52px);
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+}
+
+/* Hot/iced badge — solid filled pill, pinned top-right */
+.right-item-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(11px, 1.5vh, 20px);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: clamp(4px, 0.55vh, 8px) clamp(10px, 1.2vw, 20px);
+  display: inline-block;
+  flex-shrink: 0;
+  position: absolute;
+  top: clamp(14px, 2vh, 30px);
+  right: clamp(22px, 3vw, 52px);
+  z-index: 3;
+}
+
+/* Drink name */
+.right-item-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 5.8vh, 96px);
+  line-height: 0.9;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
+/* Rule between name and ingredients */
+.right-item-rule {
+  height: 2px;
+  margin: clamp(7px, 1vh, 16px) 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Ingredients + price on one line */
+.right-item-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5em;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .right-item-ingredients {
-  font-size: calc(var(--fs-right-name) * 0.7);
-  font-weight: 300;
-  color: var(--text-dim);
-  transition: color 0.5s ease;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(14px, 2vh, 32px);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  font-weight: 400;
 }
 
 .right-item-price {
-  font-size: var(--fs-right-price);
-  font-weight: 300;
-  color: var(--text);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 5.8vh, 94px);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
   white-space: nowrap;
-  transition: color 0.5s ease;
 }
 
-.right-item.dim .right-item-name        { color: var(--text-dim); }
-.right-item.dim .right-item-ingredients { color: var(--text-dim); }
-.right-item.dim .right-item-price       { color: var(--text-dim); }
-.right-item.highlight .right-item-name        { color: var(--text); }
-.right-item.highlight .right-item-ingredients { color: var(--text-dim); }
-.right-item.highlight .right-item-price       { color: var(--text-dim); }
+/* ── Per-drink color themes — set via theme="" in specials.json ── */
 
-/* ── Featured list slide (left panel) ───────────── */
+/* Pink Moon: deep crimson paper, magenta + cream */
+.theme-magenta                         { background: #1A0A14; }
+.theme-magenta .right-item-name        { color: #F0E8D8; text-shadow: 3px 3px 0 #DC1868; }
+.theme-magenta .right-item-rule        { background: #DC1868; }
+.theme-magenta .right-item-ingredients { color: #F0E8D8; opacity: 0.82; }
+.theme-magenta .right-item-price       { color: #DC1868; }
+.theme-magenta .right-item-badge       { background: #DC1868; color: #F0E8D8; }
 
-/* Stretch to fill height instead of centering like other slides */
+/* West-End Girls: navy paper, amber + lavender */
+.theme-amber                         { background: #0C0A1E; }
+.theme-amber .right-item-name        { color: #DDAA22; text-shadow: 3px 3px 0 #A888DC; }
+.theme-amber .right-item-rule        { background: #A888DC; }
+.theme-amber .right-item-ingredients { color: #A888DC; opacity: 0.88; }
+.theme-amber .right-item-price       { color: #A888DC; }
+.theme-amber .right-item-badge       { background: #A888DC; color: #0C0A1E; }
+
+/* Good Kid: near-black paper, electric yellow + purple */
+.theme-yellow                         { background: #070707; }
+.theme-yellow .right-item-name        { color: #E8D400; text-shadow: 4px 4px 0 #6C1EC0; }
+.theme-yellow .right-item-rule        { background: #6C1EC0; }
+.theme-yellow .right-item-ingredients { color: #E8D400; opacity: 0.82; }
+.theme-yellow .right-item-price       { color: #6C1EC0; }
+.theme-yellow .right-item-badge       { background: #6C1EC0; color: #E8D400; }
+
+/* Lazing: warm parchment paper, forest green + coral */
+.theme-coral                         { background: #EDE2BC; }
+.theme-coral .right-item-name        { color: #2E4E28; text-shadow: 3px 3px 0 #CF5828; }
+.theme-coral .right-item-rule        { background: #CF5828; }
+.theme-coral .right-item-ingredients { color: #2E4E28; opacity: 0.82; }
+.theme-coral .right-item-price       { color: #CF5828; }
+.theme-coral .right-item-badge       { background: #CF5828; color: #EDE2BC; }
+
+/* Dim/highlight states */
+.right-item.dim       { opacity: 0.4; }
+.right-item.highlight { opacity: 1; }
+
+/* ── Featured list slide — Blue Note poster treatment ── */
+
 #left-featured {
+  flex-direction: column;
   align-items: stretch;
 }
 
-#left-featured .left-inner {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-top:    clamp(24px, 3vh, 56px);
-  padding-bottom: clamp(24px, 3vh, 56px);
-}
-
-/* Title matches right-panel category header */
+/* Category title strip */
 #featured-title {
-  font-size: var(--fs-right-cat);
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #A78BFA;
   flex-shrink: 0;
-  padding-bottom: clamp(4px, 0.6vh, 10px);
-  margin-bottom: clamp(14px, 2vh, 30px);
+  background: #080408;
+  padding: clamp(14px, 2.5vh, 36px) clamp(24px, 3vw, 52px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vh, 58px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
 }
 
-/* List fills remaining height; items share it equally */
+/* List fills remaining height */
 #featured-list {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  background: #080408;
 }
 
+/* Each item = one Blue Note "cover strip" */
 .featured-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: clamp(8px, 1vw, 20px);
+  position: relative;
   flex: 1;
-  border-bottom: 1px solid var(--divider);
-}
-
-.featured-item:last-child { border-bottom: none; }
-
-.featured-item-name {
-  font-size: var(--fs-right-name);
-  font-weight: 300;
-  color: var(--text);
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  justify-content: flex-end;
+  padding: clamp(14px, 2.2vh, 34px) clamp(24px, 3vw, 52px);
+  overflow: hidden;
+}
+
+/* Drink name — big bold condensed */
+.featured-item-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 5.6vh, 90px);
+  line-height: 0.9;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
+/* Rule */
+.featured-item-rule {
+  height: 2px;
+  margin: clamp(6px, 0.9vh, 14px) 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Description + optional price */
+.featured-item-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5em;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .featured-item-desc {
-  font-size: calc(var(--fs-right-name) * 0.7);
-  font-weight: 300;
-  color: var(--text-dim);
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(14px, 2vh, 30px);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  font-weight: 400;
 }
 
 .featured-item-price {
-  font-size: var(--fs-right-price);
-  font-weight: 300;
-  color: var(--text);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 4.6vh, 74px);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
   white-space: nowrap;
 }
 
-/* ── Socials slide ───────────────────────────────── */
+/* ── Blue Note color themes ─────────────────────────
+   Each item: deep black BG, one bold accent color.
+   Accent used for: rule, description, price.
+   Name is always near-white with a subtle accent shadow.
+─────────────────────────────────────────────────── */
+
+/* Heaven or Las Vegas — classic Blue Note blue */
+.featured-item.theme-bn-blue                       { background: #060A10; }
+.featured-item.theme-bn-blue .featured-item-name   { color: #F0EDE8; text-shadow: 3px 3px 0 #1464C8; }
+.featured-item.theme-bn-blue .featured-item-rule   { background: #1464C8; }
+.featured-item.theme-bn-blue .featured-item-desc   { color: #1464C8; opacity: 0.9; }
+.featured-item.theme-bn-blue .featured-item-price  { color: #1464C8; }
+
+/* Midnight Marauders — classic Blue Note red */
+.featured-item.theme-bn-red                       { background: #0C0604; }
+.featured-item.theme-bn-red .featured-item-name   { color: #F0EDE8; text-shadow: 3px 3px 0 #CC2200; }
+.featured-item.theme-bn-red .featured-item-rule   { background: #CC2200; }
+.featured-item.theme-bn-red .featured-item-desc   { color: #CC2200; opacity: 0.9; }
+.featured-item.theme-bn-red .featured-item-price  { color: #CC2200; }
+
+/* In a Silent Way — Miles Davis green */
+.featured-item.theme-bn-green                       { background: #060C08; }
+.featured-item.theme-bn-green .featured-item-name  { color: #F0EDE8; text-shadow: 3px 3px 0 #1A7A42; }
+.featured-item.theme-bn-green .featured-item-rule  { background: #1A7A42; }
+.featured-item.theme-bn-green .featured-item-desc  { color: #1A7A42; opacity: 0.9; }
+.featured-item.theme-bn-green .featured-item-price { color: #1A7A42; }
+
+/* This Is Happening — warm amber */
+.featured-item.theme-bn-amber                       { background: #0C0A04; }
+.featured-item.theme-bn-amber .featured-item-name  { color: #F0EDE8; text-shadow: 3px 3px 0 #C87C00; }
+.featured-item.theme-bn-amber .featured-item-rule  { background: #C87C00; }
+.featured-item.theme-bn-amber .featured-item-desc  { color: #C87C00; opacity: 0.9; }
+.featured-item.theme-bn-amber .featured-item-price { color: #C87C00; }
+
+/* Ladies and Gentlemen — violet */
+.featured-item.theme-bn-violet                       { background: #08060C; }
+.featured-item.theme-bn-violet .featured-item-name  { color: #F0EDE8; text-shadow: 3px 3px 0 #7C3ABA; }
+.featured-item.theme-bn-violet .featured-item-rule  { background: #7C3ABA; }
+.featured-item.theme-bn-violet .featured-item-desc  { color: #7C3ABA; opacity: 0.9; }
+.featured-item.theme-bn-violet .featured-item-price { color: #7C3ABA; }
+
+/* ── Socials slide — concert / venue poster ──────── */
 #left-socials {
+  flex-direction: column;
   align-items: stretch;
+  background: #050505;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Large watermark SVG waveform bars — purely decorative */
+#left-socials::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 42%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 0px,  rgba(255,255,255,0.03) 6px,
+    transparent               6px, transparent              14px
+  );
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,60 L0,40 L10,28 L20,44 L30,12 L40,50 L50,20 L60,38 L70,8 L80,46 L90,18 L100,34 L110,6 L120,48 L130,22 L140,42 L150,10 L160,52 L170,24 L180,36 L190,14 L200,44 L200,60Z' fill='white'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 #left-socials .left-inner {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   height: 100%;
-  gap: clamp(32px, 5vh, 80px);
+  padding: clamp(28px, 4vh, 64px) clamp(28px, 3.5vw, 64px);
+  position: relative;
+  z-index: 2;
 }
 
+/* Top section: label + headline */
+.socials-top { display: flex; flex-direction: column; gap: clamp(8px, 1.2vh, 18px); }
+
+/* "INSTAGRAM" — matches category header style */
 #socials-platform {
-  font-size: var(--fs-right-cat);
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vh, 58px);
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #A78BFA;
+  color: rgba(255,255,255,0.65);
 }
+
+/* Big headline */
+.socials-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 112px);
+  line-height: 0.88;
+  letter-spacing: 0.06em;
+  color: #F0EDE8;
+  text-shadow: 4px 4px 0 rgba(255,255,255,0.05);
+}
+
+/* Rule */
+.socials-rule {
+  height: 3px;
+  background: #F0EDE8;
+  margin: clamp(16px, 2.5vh, 40px) 0;
+  opacity: 0.15;
+}
+
+/* Bottom section: accounts list */
+.socials-accounts { display: flex; flex-direction: column; }
 
 .socials-account {
-  font-size: clamp(32px, 3.8vw, 88px);
-  font-weight: 300;
-  color: var(--text);
-  letter-spacing: -0.01em;
-  border-bottom: 1px solid var(--divider);
-  padding-bottom: clamp(16px, 2.5vh, 40px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 8.5vh, 140px);
+  line-height: 1.0;
+  letter-spacing: 0.04em;
+  color: #F0EDE8;
+  padding: clamp(8px, 1.2vh, 18px) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
 }
 
-.socials-account:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.socials-account:last-child { border-bottom: none; }
+
+/* @ symbol in accent color */
+.socials-account::before {
+  content: '@';
+  color: #DC1868;
+  font-size: 0.65em;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+/* Footer: "follow us" nudge */
+.socials-footer {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px, 1.1vh, 16px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+  padding-top: clamp(14px, 2vh, 30px);
 }
 
 /* ── Split-flap ──────────────────────────────────── */

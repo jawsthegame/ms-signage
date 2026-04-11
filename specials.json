@@ -4,24 +4,32 @@
       "category": "Spring Sequence",
       "drinks": [
         {
-          "name": "🔥 Pink Moon",
+          "name": "Pink Moon",
           "ingredients": "chai latte · rose syrup",
-          "price": "6"
+          "price": "6",
+          "temp": "hot",
+          "theme": "magenta"
         },
         {
-          "name": "🔥 West-End Girls",
+          "name": "West-End Girls",
           "ingredients": "earl grey · oat milk · lavender syrup",
-          "price": "5"
+          "price": "5",
+          "temp": "hot",
+          "theme": "amber"
         },
         {
-          "name": "🧊 good kid, m.A.A.d berry",
+          "name": "good kid, m.A.A.d berry",
           "ingredients": "espresso · tonic water · blackberry syrup",
-          "price": "4.5"
+          "price": "4.5",
+          "temp": "iced",
+          "theme": "yellow"
         },
         {
-          "name": "🧊 Lazing on a Sunny Afternoon",
+          "name": "Lazing on a Sunny Afternoon",
           "ingredients": "citrus green blend · peach syrup",
-          "price": "4"
+          "price": "4",
+          "temp": "iced",
+          "theme": "coral"
         }
       ]
     }

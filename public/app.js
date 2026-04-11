@@ -329,7 +329,7 @@ function renderNowPlaying() {
 function renderSocials() {
   el('socials-platform').textContent = SOCIAL_PLATFORM;
   el('socials-accounts').innerHTML = SOCIAL_ACCOUNTS
-    .map(a => `<div class="socials-account">${a}</div>`)
+    .map(a => `<div class="socials-account">${a.replace(/^@/, '')}</div>`)
     .join('');
 }
 
@@ -338,15 +338,20 @@ function renderSocials() {
 function renderFeatured(listName) {
   const list = data.lists[listName];
   if (!list || !list.items || !list.items.length) return;
+
+  // Header
   el('featured-title').textContent = list.title || '';
+
+  // Poster-strip rows
   let html = '';
   list.items.forEach(item => {
-    html += `<div class="featured-item">
-      <span class="featured-item-name">
-        ${item.name}
-        ${item.description ? `<span class="featured-item-desc">${item.description}</span>` : ''}
-      </span>
-      <span class="featured-item-price">${item.price ? '$' + item.price : ''}</span>
+    html += `<div class="featured-item theme-${item.theme || 'bn-blue'}">
+      <div class="featured-item-name">${item.name}</div>
+      <div class="featured-item-rule"></div>
+      <div class="featured-item-bottom">
+        <div class="featured-item-desc">${item.description || ''}</div>
+        ${item.price ? `<div class="featured-item-price">${parseFloat(item.price)}</div>` : ''}
+      </div>
     </div>`;
   });
   el('featured-list').innerHTML = html;
@@ -371,19 +376,21 @@ function renderRightSpecials() {
   let flatIdx = 0;
 
   for (const cat of (data.specials.items || [])) {
-    html += `<div class="right-group">
-      <div class="right-category">${cat.category}</div>`;
+    html += `<div class="right-category-header">${cat.category}</div>`;
     for (const drink of (cat.drinks || [])) {
-      html += `<div class="right-item" data-idx="${flatIdx}">
-        <span class="right-item-name">
-          ${drink.name}
-          ${drink.ingredients ? `<span class="right-item-ingredients">${drink.ingredients}</span>` : ''}
-        </span>
-        <span class="right-item-price">${drink.price}</span>
+      const badge = drink.temp === 'iced' ? '❄ Iced' : '● Hot';
+
+      html += `<div class="right-item theme-${drink.theme || 'magenta'}" data-idx="${flatIdx}">
+        <div class="right-item-badge">${badge}</div>
+        <div class="right-item-name">${drink.name}</div>
+        <div class="right-item-rule"></div>
+        <div class="right-item-bottom">
+          <div class="right-item-ingredients">${drink.ingredients || ''}</div>
+          <div class="right-item-price">${parseFloat(drink.price)}</div>
+        </div>
       </div>`;
       flatIdx++;
     }
-    html += `</div>`;
   }
 
   container.innerHTML = html;
