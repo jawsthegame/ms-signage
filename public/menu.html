@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Morning Static — Coffee</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #080408;
+      color: #F0F0F0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #menu {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ─────────────────────────────── */
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: clamp(10px, 2vmin, 32px) clamp(16px, 4vmin, 64px);
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+
+    .menu-shop {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 7vmin, 120px);
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+
+    .menu-venue {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(13px, 2.8vmin, 42px);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.4em;
+    }
+
+    .menu-venue .brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5em;
+      letter-spacing: 0.18em;
+      color: #E8B84A;
+      text-shadow: 1px 1px 0 #7A4A10;
+      vertical-align: baseline;
+    }
+
+    .menu-logo {
+      height: clamp(80px, 16vmin, 240px);
+      width: auto;
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    /* ── Drink rows ──────────────────────────── */
+    .drink-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .drink-row {
+      flex: 1;
+      display: grid;
+      grid-template-columns: clamp(40px, 9vmin, 150px) 1fr auto;
+      align-items: center;
+      gap: 0 clamp(14px, 2.5vmin, 50px);
+      padding: 0 clamp(18px, 4vmin, 72px);
+      border-bottom: 1px solid rgba(255,255,255,0.055);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drink-row:last-child { border-bottom: none; }
+
+    /* silk-screen registration-mark accent line */
+    .drink-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    /* ── Cup SVG ────────────────────────────── */
+    .drink-cup {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .drink-cup svg {
+      width: 100%;
+      height: 100%;
+      max-height: clamp(50px, 11vmin, 160px);
+      overflow: visible;
+    }
+
+    /* ── Info ────────────────────────────────── */
+    .drink-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+      min-width: 0;
+    }
+
+    .drink-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(26px, 5vmin, 100px);
+      line-height: 0.88;
+      letter-spacing: 0.025em;
+      color: var(--accent);
+      text-shadow: 2px 2px 0 var(--shadow);
+    }
+
+    .drink-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(15px, 2.8vmin, 42px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Price ───────────────────────────────── */
+    .drink-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(26px, 5vmin, 100px);
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      text-align: right;
+      line-height: 1;
+      opacity: 0.75;
+    }
+
+    /* ── Section header ──────────────────────── */
+    .section-header {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(20px, 4vmin, 72px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      background: #080408;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      border-top: 2px solid rgba(255,255,255,0.08);
+      padding: clamp(8px, 1.3vmin, 26px) clamp(18px, 4vmin, 72px);
+      flex-shrink: 0;
+    }
+
+    /* ── Drink subtitle ───────────────────────── */
+    .drink-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(7px, min(0.9vw, 1.1vh), 14px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.55;
+      margin-bottom: 0.1em;
+    }
+
+    /* ── Add-ons footer ─────────────────────── */
+    .add-ons {
+      border-top: 2px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+      padding: clamp(10px, 1.6vmin, 28px) clamp(18px, 4vmin, 72px);
+    }
+
+    .add-ons-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(11px, 1.6vmin, 24px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: clamp(8px, 1.2vmin, 20px);
+    }
+
+    .add-ons-cta strong {
+      color: rgba(255,255,255,0.75);
+      font-weight: 700;
+    }
+
+    .add-ons-cols {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 0 clamp(16px, 3vmin, 48px);
+    }
+
+    .add-ons-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(16px, 2.8vmin, 48px);
+      letter-spacing: 0.32em;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 0.25em;
+    }
+
+    .add-ons-label span {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(9px, 1.2vmin, 18px);
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.35);
+      margin-left: 0.5em;
+      vertical-align: middle;
+    }
+
+    .add-ons-items {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(12px, 2vmin, 30px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.75;
+    }
+
+    .add-ons-cols .add-ons-col:first-child .add-ons-items {
+      color: rgba(255,220,160,0.9);
+    }
+
+    /* ── Grain overlay ───────────────────────── */
+    #grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.045;
+    }
+  </style>
+</head>
+<body>
+
+<div id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="menu-shop">Welcome to The Goat House</div>
+      <div class="menu-venue">Coffee by <span class="brand">Morning Static</span> · Elkins Park</div>
+    </div>
+    <img class="menu-logo" src="/morning-static-logo.png" alt="Morning Static">
+  </div>
+  <div class="drink-list" id="drink-list"></div>
+  <div class="add-ons" id="add-ons"></div>
+</div>
+
+<svg id="grain" xmlns="http://www.w3.org/2000/svg">
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+
+<script>
+'use strict';
+
+// ── Layer colors ─────────────────────────────────────────
+const C_ESPRESSO  = '#1E0A02';
+const C_CREMA     = '#7A3A10';
+const C_CHOCOLATE = '#3D1208';   // dark chocolate layer
+const C_MILK      = '#6B3C22';
+const C_MICROFOAM = '#A06840';
+const C_FOAM      = '#BF8A50';
+const C_COLDBREW  = '#1C0E06';   // dark warm brown — not blue
+
+// ── Cup SVG builder ──────────────────────────────────────
+function cup(drink, idx) {
+  const { esp = 100, milk = 0, foam = 0, choc = 0, vessel = 'mug',
+          cold = false, baseColor, milkColor, crema = true } = drink;
+  const id = `c${idx}`;
+  const VW = 100, VH = 160;
+
+  let rimT, rimB, cupTL, cupTR, cupBL, cupBR, hasHandle;
+  switch (vessel) {
+    case 'demitasse':
+      rimT=30; rimB=118; cupTL=22; cupTR=78; cupBL=30; cupBR=70; hasHandle=true;  break;
+    case 'gibraltar':
+      rimT=20; rimB=128; cupTL=14; cupTR=86; cupBL=24; cupBR=76; hasHandle=false; break;
+    case 'glass':
+      rimT=10; rimB=135; cupTL=18; cupTR=82; cupBL=22; cupBR=78; hasHandle=false; break;
+    default: // mug
+      rimT=14; rimB=132; cupTL=10; cupTR=90; cupBL=22; cupBR=78; hasHandle=true;
+  }
+
+  const innerH = rimB - rimT;
+  const foamH  = foam / 100 * innerH;
+  const milkH  = milk / 100 * innerH;
+  const chocH  = choc / 100 * innerH;
+  const espH   = esp  / 100 * innerH;
+  const foamY  = rimT;
+  const milkY  = rimT + foamH;
+  const chocY  = rimT + foamH + milkH;
+  const espY   = rimT + foamH + milkH + chocH;
+
+  const path = `M ${cupTL} ${rimT} L ${cupTR} ${rimT} L ${cupBR} ${rimB} Q 50 ${rimB+14} ${cupBL} ${rimB} Z`;
+  const strokeA = vessel === 'glass' ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.18)';
+  const p = [];
+
+  // Base (espresso / coffee / tea) layer
+  const baseCol = baseColor || (cold ? C_COLDBREW : C_ESPRESSO);
+  p.push(`<rect x="0" y="${espY}" width="${VW}" height="${VH}" fill="${baseCol}" clip-path="url(#${id})"/>`);
+
+  // Crema stripe
+  if (espH > 4 && !baseColor && crema) {
+    p.push(`<rect x="0" y="${espY}" width="${VW}" height="${Math.min(espH*0.12,8)}" fill="${C_CREMA}" clip-path="url(#${id})" opacity="0.9"/>`);
+  }
+
+  // Chocolate layer (between espresso and milk)
+  if (chocH > 1) {
+    p.push(`<rect x="0" y="${chocY}" width="${VW}" height="${chocH}" fill="${C_CHOCOLATE}" clip-path="url(#${id})"/>`);
+    // subtle sheen at top of choc layer
+    p.push(`<rect x="0" y="${chocY}" width="${VW}" height="${Math.min(chocH*0.2,4)}" fill="rgba(200,80,20,0.18)" clip-path="url(#${id})"/>`);
+  }
+
+  // Milk layer
+  if (milkH > 1) {
+    const mc = milkColor || (foam > 20 ? C_MICROFOAM : C_MILK);
+    p.push(`<rect x="0" y="${milkY}" width="${VW}" height="${milkH}" fill="${mc}" clip-path="url(#${id})"/>`);
+    p.push(`<rect x="0" y="${milkY}" width="${VW}" height="${Math.min(milkH*0.15,6)}" fill="rgba(255,200,140,0.12)" clip-path="url(#${id})"/>`);
+  }
+
+  // Foam layer
+  if (foamH > 1) {
+    p.push(`<rect x="0" y="${foamY}" width="${VW}" height="${foamH}" fill="${C_FOAM}" clip-path="url(#${id})"/>`);
+    if (foamH > 6) {
+      const rows = Math.max(1, Math.floor(foamH / 7));
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < 5; c++)
+          p.push(`<circle cx="${14+c*16+(r%2)*8}" cy="${foamY+3+r*6}" r="2.2" fill="rgba(255,245,225,0.22)" clip-path="url(#${id})"/>`);
+    }
+    if (foamH > 18) {
+      const cx=50, cy=foamY+foamH*0.5;
+      p.push(`<circle cx="${cx}" cy="${cy}" r="${foamH*0.28}" fill="none" stroke="rgba(100,50,10,0.35)" stroke-width="1.5" clip-path="url(#${id})"/>`);
+      p.push(`<circle cx="${cx}" cy="${cy}" r="${foamH*0.14}" fill="rgba(100,50,10,0.25)" clip-path="url(#${id})"/>`);
+    }
+  }
+
+  // Nitro cascade bubbles — warm cream, not blue
+  if (cold) {
+    const seed = [0.18,0.72,0.42,0.85,0.30,0.61,0.55,0.09,0.95,0.38,0.77,0.22];
+    for (let i = 0; i < 12; i++) {
+      const t  = i / 11;
+      const bx = cupTL + 8 + seed[i] * (cupTR - cupTL - 16);
+      const by = rimB - 4 - t * (innerH - 10);
+      const br = 0.8 + t * 2.4;
+      p.push(`<circle cx="${bx}" cy="${by}" r="${br}" fill="rgba(210,175,120,0.32)" clip-path="url(#${id})"/>`);
+    }
+  }
+
+  // Cup outline
+  p.push(`<path d="${path}" fill="none" stroke="${strokeA}" stroke-width="2.5" stroke-linejoin="round"/>`);
+
+  // Handle
+  if (hasHandle) {
+    const hy1 = rimT + innerH * 0.22, hy2 = rimT + innerH * 0.64;
+    const hx  = cupBR - 3, hr = vessel === 'demitasse' ? 9 : 13;
+    p.push(`<path d="M ${hx} ${hy1} Q ${hx+hr} ${(hy1+hy2)/2} ${hx} ${hy2}" fill="none" stroke="${strokeA}" stroke-width="2.5" stroke-linecap="round"/>`);
+  }
+
+  // Steam
+  if (!cold) {
+    [[0.28,0.14],[0.52,0.10],[0.72,0.12]].forEach(([pos, op], i) => {
+      const x = cupTL + (cupTR - cupTL) * pos, y0 = rimT - 4, amp = 5 + i * 2;
+      p.push(`<path d="M ${x} ${y0} Q ${x-amp} ${y0-9} ${x} ${y0-18} Q ${x+amp} ${y0-27} ${x} ${y0-36}" fill="none" stroke="rgba(255,255,255,${op})" stroke-width="1.8" stroke-linecap="round"/>`);
+    });
+  }
+
+  // Cold badge
+  if (cold)
+    p.push(`<text x="50" y="${rimB+28}" text-anchor="middle" font-size="11" fill="rgba(200,165,100,0.55)" font-family="'Space Mono',monospace">❄</text>`);
+
+  return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs><clipPath id="${id}"><path d="${path}"/></clipPath></defs>
+    ${p.join('\n    ')}
+  </svg>`;
+}
+
+// ── Render ───────────────────────────────────────────────
+function render(data) {
+  // Header
+  document.querySelector('.menu-shop').textContent = data.shop || '';
+  const venueEl = document.querySelector('.menu-venue');
+  venueEl.innerHTML = (data.venue || '').replace('Morning Static', '<span class="brand">Morning Static</span>');
+
+  let idx = 0;
+  const rows = (data.sections || [{ title: data.title, drinks: data.drinks }])
+    .flatMap(section => [
+      `<div class="section-header">${section.title}</div>`,
+      ...(section.drinks || []).map(d => {
+        const i = idx++;
+        return `<div class="drink-row" style="--accent:${d.accent};--shadow:${d.shadow}">
+          <div class="drink-cup">${cup(d, i)}</div>
+          <div class="drink-info">
+            <div class="drink-name">${d.name}</div>
+            <div class="drink-desc">${d.desc}</div>
+          </div>
+          <div class="drink-price">${d.price}</div>
+        </div>`;
+      })
+    ]);
+
+  document.getElementById('drink-list').innerHTML = rows.join('');
+
+  // Add-ons footer
+  const syrups = data.syrups || [];
+  const milks  = data.milks  || [];
+  if (syrups.length || milks.length) {
+    document.getElementById('add-ons').innerHTML = `
+      <div class="add-ons-cta">Ask about our <strong>House-Made Flavors</strong> menu for pairing recommendations</div>
+      <div class="add-ons-cols">
+        <div class="add-ons-col">
+          <div class="add-ons-label">House Syrups <span>handcrafted</span></div>
+          <div class="add-ons-items">${syrups.join('<br>')}</div>
+        </div>
+        <div class="add-ons-col">
+          <div class="add-ons-label">Milks</div>
+          <div class="add-ons-items">${milks.join('<br>')}</div>
+        </div>
+      </div>`;
+  }
+}
+
+fetch('/menu.json')
+  .then(r => r.json())
+  .then(render)
+  .catch(e => console.error('menu.json load failed', e));
+</script>
+</body>
+</html>

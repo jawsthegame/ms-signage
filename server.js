@@ -7,12 +7,17 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const SONOS_IP = process.env.SONOS_IP || null;
+const MENU_ONLY = process.env.MENU_ONLY === 'true';
 
 let sonosDevice = null;
 let sonosHost = null;
 
 // --- Sonos setup ---
-try {
+if (MENU_ONLY) {
+  console.log('Menu-only mode — skipping Sonos and SEPTA setup');
+}
+
+if (!MENU_ONLY) try {
   const { Sonos, DeviceDiscovery } = require('sonos');
   console.log('Sonos: package loaded OK');
 
@@ -46,6 +51,7 @@ try {
 }
 
 // --- SEPTA arrivals ---
+if (!MENU_ONLY)
 // API response shape:
 //   { "Elkins Park Departures: <date>": [ {Northbound: [...]}, {Southbound: [...]} ] }
 // path codes: R4 = Warminster, R3/R5 = West Trenton

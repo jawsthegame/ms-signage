@@ -4,7 +4,8 @@
   "description": "Digital signage for coffee shop — trains, specials, now playing",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "menu": "MENU_ONLY=true node server.js"
   },
   "dependencies": {
     "axios": "^1.7.0",

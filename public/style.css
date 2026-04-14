@@ -22,9 +22,9 @@
   --fs-shop:           clamp(16px,  0.85vw,  20px);
   --fs-line-name:      clamp(16px,  1.6vw,   40px);
   --fs-col-header:     clamp(13px,  1.1vw,   26px);
-  --fs-train-time:     clamp(28px,  min(4.2vw, 5.2vh),  102px);
-  --fs-train-dest:     clamp(28px,  2.2vw,   72px);
-  --fs-train-status:   clamp(28px,  2.2vw,   68px);
+  --fs-train-time:     clamp(28px,  min(4.2vw, 5.0vh),  116px);
+  --fs-train-dest:     clamp(20px,  2.2vw,   66px);
+  --fs-train-status:   clamp(20px,  2.2vw,   62px);
   --fs-track-title:    clamp(32px,  3.0vw,   56px);
   --fs-track-artist:   clamp(18px,  2.5vw,   44px);
   --fs-track-album:    clamp(14px,  2.5vw,   36px);
@@ -36,7 +36,7 @@
   --fs-right-cat:      clamp(24px,  1.4vw,   40px);
 
   /* Train time column — must fit the full time display at max font size */
-  --train-time-col: clamp(160px, 20vw, 520px);
+  --train-time-col: clamp(160px, 20vw, 600px);
 }
 
 html, body {
@@ -121,17 +121,25 @@ html, body {
   margin-bottom: clamp(22px, 2.7vh, 48px);
 }
 
+/* Tighter horizontal padding scoped to the SEPTA slide */
+#left-septa { --septa-pad: clamp(14px, 1.8vw, 36px); }
+
+#left-septa .left-inner {
+  padding-left:  var(--septa-pad);
+  padding-right: var(--septa-pad);
+}
+
 /* Station header — matches category header style, keeps purple + logo */
 .septa-header {
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.5vw, 24px);
   background: #080408;
-  padding: clamp(14px, 2.5vh, 36px) var(--pad-h);
+  padding: clamp(14px, 2.5vh, 36px) var(--septa-pad, var(--pad-h));
   border-bottom: 2px solid rgba(255,255,255,0.1);
   margin-bottom: clamp(24px, 3.5vh, 52px);
-  margin-left: calc(-1 * var(--pad-h));
-  margin-right: calc(-1 * var(--pad-h));
+  margin-left:  calc(-1 * var(--septa-pad, var(--pad-h)));
+  margin-right: calc(-1 * var(--septa-pad, var(--pad-h)));
   margin-top: calc(-1 * clamp(24px, 3vh, 56px));
 }
 
@@ -174,8 +182,8 @@ html, body {
 
 .train-header {
   display: grid;
-  grid-template-columns: var(--train-time-col) 2fr auto;
-  gap: 0 clamp(12px, 1.5vw, 28px);
+  grid-template-columns: var(--train-time-col) 1fr auto;
+  gap: 0 clamp(8px, 1vw, 20px);
   padding-bottom: clamp(8px, 1vh, 18px);
   border-bottom: 1px solid var(--divider);
   margin-bottom: 2px;
@@ -193,8 +201,8 @@ html, body {
   display: grid;
   grid-template-columns: var(--train-time-col) 1fr auto;
   align-items: center;
-  gap: 0 clamp(12px, 1.5vw, 28px);
-  padding: clamp(6px, 0.9vh, 16px) 0;
+  gap: 0 clamp(8px, 1vw, 20px);
+  padding: clamp(8px, 1.2vh, 24px) 0;
   border-bottom: 1px solid var(--divider);
 }
 
@@ -213,7 +221,7 @@ html, body {
 }
 
 .train-dest {
-  font-size: clamp(20px, 3.5cqi, 56px);
+  font-size: var(--fs-train-dest);
   font-weight: 300;
   color: #E8C84A;
   display: flex;
@@ -221,6 +229,7 @@ html, body {
   gap: 0.3em;
   overflow: hidden;
   min-width: 0;
+  white-space: nowrap;
 }
 
 .dest-arrow {
@@ -230,13 +239,12 @@ html, body {
 }
 
 .train-status {
-  font-size: clamp(20px, 3.5cqi, 52px);
+  font-size: var(--fs-train-status);
   font-weight: 500;
   letter-spacing: 0.04em;
   display: flex;
   align-items: center;
-  overflow: hidden;
-  min-width: 0;
+  white-space: nowrap;
 }
 
 .train-status.on-time   { color: var(--on-time); }
@@ -476,13 +484,13 @@ html, body {
 .theme-yellow .right-item-price       { color: #6C1EC0; }
 .theme-yellow .right-item-badge       { background: #6C1EC0; color: #E8D400; }
 
-/* Lazing: warm parchment paper, forest green + coral */
-.theme-coral                         { background: #EDE2BC; }
-.theme-coral .right-item-name        { color: #2E4E28; text-shadow: 3px 3px 0 #CF5828; }
+/* Lazing: dark earthy paper, golden + coral */
+.theme-coral                         { background: #18100A; }
+.theme-coral .right-item-name        { color: #E8B84A; text-shadow: 3px 3px 0 #CF5828; }
 .theme-coral .right-item-rule        { background: #CF5828; }
-.theme-coral .right-item-ingredients { color: #2E4E28; opacity: 0.82; }
+.theme-coral .right-item-ingredients { color: #E8B84A; opacity: 0.78; }
 .theme-coral .right-item-price       { color: #CF5828; }
-.theme-coral .right-item-badge       { background: #CF5828; color: #EDE2BC; }
+.theme-coral .right-item-badge       { background: #CF5828; color: #18100A; }
 
 /* Dim/highlight states */
 .right-item.dim       { opacity: 0.4; }
@@ -562,7 +570,7 @@ html, body {
 
 .featured-item-desc {
   font-family: 'Space Mono', monospace;
-  font-size: clamp(14px, 2vh, 30px);
+  font-size: clamp(16px, 2.8vh, 40px);
   letter-spacing: 0.07em;
   text-transform: uppercase;
   line-height: 1.4;

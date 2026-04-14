@@ -1,0 +1,143 @@
+{
+  "shop":  "Welcome to The Goat House",
+  "venue": "Coffee by Morning Static · Elkins Park",
+  "sections": [
+    {
+      "title": "Coffee",
+      "drinks": [
+        {
+          "name":      "Drip",
+          "desc":      "medium & dark roast · ask your barista",
+          "price":     "3.5 / 4",
+          "accent":    "#F0E4C8",
+          "shadow":    "#A08040",
+          "esp": 100, "milk": 0, "foam": 0,
+          "crema":     false,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Nitro",
+          "desc":      "cold brew • nitrogen infusion",
+          "price":     "5",
+          "accent":    "#C8A878",
+          "shadow":    "#704820",
+          "esp": 100, "milk": 0, "foam": 0,
+          "vessel":    "glass",
+          "cold":      true
+        },
+        {
+          "name":      "Espresso",
+          "desc":      "double shot",
+          "price":     "3.5",
+          "accent":    "#FF8C42",
+          "shadow":    "#A04010",
+          "esp": 100, "milk": 0, "foam": 0,
+          "vessel":    "demitasse"
+        },
+        {
+          "name":      "Americano",
+          "desc":      "espresso · hot water",
+          "price":     "3.75",
+          "accent":    "#E8A000",
+          "shadow":    "#904000",
+          "esp": 20, "milk": 80, "foam": 0,
+          "milkColor": "#0EB7F1",
+          "vessel":    "mug"
+          },
+        {
+          "name":      "Macchiato",
+          "desc":      "espresso · dollop of foam",
+          "price":     "3.75",
+          "accent":    "#DC1868",
+          "shadow":    "#880830",
+          "esp": 82, "milk": 0, "foam": 18,
+          "vessel":    "demitasse"
+        },
+        {
+          "name":      "Cortado",
+          "desc":      "½ espresso · ½ steamed milk",
+          "price":     "4",
+          "accent":    "#DDAA22",
+          "shadow":    "#906010",
+          "esp": 50, "milk": 48, "foam": 2,
+          "vessel":    "gibraltar"
+        },
+        {
+          "name":      "Cappuccino",
+          "desc":      "⅓ espresso · ⅓ milk · ⅓ foam",
+          "price":     "4.5",
+          "accent":    "#A888DC",
+          "shadow":    "#503090",
+          "esp": 33, "milk": 34, "foam": 33,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Flat White",
+          "desc":      "espresso · steamed milk · microfoam",
+          "price":     "4.5",
+          "accent":    "#E8D400",
+          "shadow":    "#806000",
+          "esp": 33, "milk": 64, "foam": 3,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Latte",
+          "desc":      "espresso · steamed milk · thin foam",
+          "price":     "5 / 5.5",
+          "accent":    "#CF5828",
+          "shadow":    "#702010",
+          "esp": 15, "milk": 78, "foam": 7,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Mocha Latte",
+          "desc":      "espresso · chocolate · steamed milk · thin foam",
+          "price":     "5.5 / 6",
+          "accent":    "#CF5828",
+          "shadow":    "#702010",
+          "esp": 10, "choc": 14, "milk": 69, "foam": 7,
+          "vessel":    "mug"
+        }
+      ]
+    },
+    {
+      "title": "Tea",
+      "drinks": [
+        {
+          "name":      "Locally Blended Tea",
+          "desc":      "ask your barista for today's selection",
+          "price":     "3.5 / 4",
+          "accent":    "#B8C878",
+          "shadow":    "#607030",
+          "esp": 100, "milk": 0, "foam": 0,
+          "baseColor": "#3A2808",
+          "crema":     false,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Chai Latte",
+          "desc":      "chai spices · steamed milk · thin foam",
+          "price":     "5 / 6",
+          "accent":    "#E8905A",
+          "shadow":    "#803818",
+          "esp": 45, "milk": 48, "foam": 7,
+          "baseColor": "#5A2010",
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Matcha Latte",
+          "desc":      "matcha tea • steamed milk · thin foam",
+          "price":     "5.5 / 6",
+          "accent":    "#78B858",
+          "shadow":    "#306020",
+          "esp": 30, "milk": 64, "foam": 6,
+          "baseColor": "#1A4010",
+          "milkColor": "#8A9870",
+          "vessel":    "mug"
+        }
+      ]
+    }
+  ],
+  "syrups": ["Honey Lavender", "Vanilla Bean", "Rosemary & Sea Salt", "Rose & Cardamom", "Dark Cinnamon"],
+  "milks":  ["Whole", "2%", "Oat", "Almond"]
+}
