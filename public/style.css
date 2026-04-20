@@ -394,11 +394,11 @@ html, body {
 /* Hot/iced badge — solid filled pill, pinned top-right */
 .right-item-badge {
   font-family: 'Space Mono', monospace;
-  font-size: clamp(11px, 1.5vh, 20px);
+  font-size: clamp(16px, 2.2vh, 32px);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: clamp(4px, 0.55vh, 8px) clamp(10px, 1.2vw, 20px);
+  padding: clamp(5px, 0.7vh, 12px) clamp(14px, 1.6vw, 28px);
   display: inline-block;
   flex-shrink: 0;
   position: absolute;
@@ -441,9 +441,9 @@ html, body {
 
 .right-item-ingredients {
   font-family: 'Space Mono', monospace;
-  font-size: clamp(14px, 2vh, 32px);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: clamp(18px, 3.0vh, 46px);
+  letter-spacing: 0.05em;
+  text-transform: none;
   line-height: 1.4;
   flex: 1;
   min-width: 0;
@@ -522,6 +522,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding-bottom: clamp(12px, 2vh, 32px);
   background: #080408;
 }
 
@@ -531,7 +532,7 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   padding: clamp(14px, 2.2vh, 34px) clamp(24px, 3vw, 52px);
   overflow: hidden;
 }
@@ -570,9 +571,9 @@ html, body {
 
 .featured-item-desc {
   font-family: 'Space Mono', monospace;
-  font-size: clamp(16px, 2.8vh, 40px);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: clamp(20px, 2.9vh, 48px);
+  letter-spacing: 0.05em;
+  text-transform: none;
   line-height: 1.4;
   flex: 1;
   min-width: 0;
