@@ -131,9 +131,9 @@
 
     .drink-desc {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(15px, 2.8vmin, 42px);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: clamp(16px, 2.1vmin, 42px);
+      letter-spacing: 0.04em;
+      text-transform: none;
       color: rgba(255,255,255,0.6);
       white-space: nowrap;
       overflow: hidden;
@@ -151,18 +151,34 @@
       opacity: 0.75;
     }
 
-    /* ── Section header ──────────────────────── */
-    .section-header {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(20px, 4vmin, 72px);
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      background: #080408;
-      border-bottom: 2px solid rgba(255,255,255,0.08);
-      border-top: 2px solid rgba(255,255,255,0.08);
-      padding: clamp(8px, 1.3vmin, 26px) clamp(18px, 4vmin, 72px);
+    /* ── Section group (label + drinks) ─────── */
+    .section-group {
+      display: flex;
+      min-height: 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .section-group:first-child { border-top: none; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      width: clamp(40px, 5.5vmin, 80px);
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(22px, 4.5vmin, 72px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-drinks {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
 
     /* ── Drink subtitle ───────────────────────── */
@@ -180,16 +196,40 @@
     .add-ons {
       border-top: 2px solid rgba(255,255,255,0.12);
       flex-shrink: 0;
-      padding: clamp(10px, 1.6vmin, 28px) clamp(18px, 4vmin, 72px);
+      display: flex;
+      flex-direction: row;
     }
 
-    .add-ons-cta {
+    .add-ons-label-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: clamp(40px, 5.5vmin, 80px);
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(22px, 4.5vmin, 72px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      background: #0A0A06;
+      color: #A09050;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .add-ons-body {
+      flex: 1;
+      min-width: 0;
+      padding: clamp(6px, 1vmin, 18px) clamp(18px, 4vmin, 72px);
+    }
+
+    .add-ons-body .add-ons-cta {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(11px, 1.6vmin, 24px);
+      font-size: clamp(9px, 1.2vmin, 18px);
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: clamp(8px, 1.2vmin, 20px);
+      color: rgba(255,255,255,0.35);
+      margin-bottom: clamp(4px, 0.7vmin, 12px);
     }
 
     .add-ons-cta strong {
@@ -199,16 +239,16 @@
 
     .add-ons-cols {
       display: grid;
-      grid-template-columns: 3fr 2fr;
+      grid-template-columns: 5fr 1.5fr;
       gap: 0 clamp(16px, 3vmin, 48px);
     }
 
     .add-ons-label {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(16px, 2.8vmin, 48px);
+      font-size: clamp(14px, 2.2vmin, 38px);
       letter-spacing: 0.32em;
       color: rgba(255,255,255,0.9);
-      margin-bottom: 0.25em;
+      margin-bottom: 0.15em;
     }
 
     .add-ons-label span {
@@ -222,15 +262,73 @@
 
     .add-ons-items {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(12px, 2vmin, 30px);
+      font-size: clamp(14px, 2.6vmin, 38px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.75);
-      line-height: 1.75;
+      line-height: 1.5;
+      columns: 2;
     }
 
     .add-ons-cols .add-ons-col:first-child .add-ons-items {
       color: rgba(255,220,160,0.9);
+    }
+
+
+    /* Monin column — de-emphasized, inline wrapping list */
+    .add-ons-col.monin {
+      grid-column: 1 / -1;  /* span full width */
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: clamp(6px, 1vmin, 16px);
+      margin-top: clamp(4px, 0.8vmin, 12px);
+    }
+    .add-ons-col.monin .add-ons-label {
+      color: rgba(255,255,255,0.35);
+      font-size: clamp(14px, 2.4vmin, 40px);
+      display: inline;
+      margin-right: 0.6em;
+    }
+    .add-ons-col.monin .add-ons-label span {
+      color: rgba(255,255,255,0.2);
+    }
+    .add-ons-col.monin .add-ons-items {
+      display: inline;
+      color: rgba(255,255,255,0.65);
+      font-size: clamp(13px, 2.2vmin, 32px);
+      line-height: 1.5;
+    }
+    .add-ons-col.monin .add-on-item {
+      display: inline;
+    }
+    .add-ons-col.monin .add-on-item::after {
+      content: ' · ';
+      opacity: 0.5;
+    }
+    .add-ons-col.monin .add-on-item:last-child::after {
+      content: '';
+    }
+
+    /* ── Sold-out items ──────────────────────── */
+    .add-on-item {
+      display: block;
+      transition: opacity 0.4s;
+    }
+
+    .add-on-item.sold-out {
+      opacity: 0.7;
+      text-decoration: line-through;
+      text-decoration-color: currentColor;
+      text-decoration-thickness: 1px;
+    }
+
+    .add-on-item.sold-out::after {
+      content: 'OUT';
+      display: inline-block;
+      font-size: 0.62em;
+      color: #FF4422;
+      letter-spacing: 0.14em;
+      margin-left: 0.6em;
+      vertical-align: middle;
     }
 
     /* ── Grain overlay ───────────────────────── */
@@ -248,7 +346,7 @@
 <div id="menu">
   <div class="menu-header">
     <div>
-      <div class="menu-shop">Welcome to The Goat House</div>
+      <div class="menu-shop">Welcome to Goat House</div>
       <div class="menu-venue">Coffee by <span class="brand">Morning Static</span> · Elkins Park</div>
     </div>
     <img class="menu-logo" src="/morning-static-logo.png" alt="Morning Static">
@@ -397,10 +495,9 @@ function render(data) {
   venueEl.innerHTML = (data.venue || '').replace('Morning Static', '<span class="brand">Morning Static</span>');
 
   let idx = 0;
-  const rows = (data.sections || [{ title: data.title, drinks: data.drinks }])
-    .flatMap(section => [
-      `<div class="section-header">${section.title}</div>`,
-      ...(section.drinks || []).map(d => {
+  const groups = (data.sections || [{ title: data.title, drinks: data.drinks }])
+    .map(section => {
+      const drinkRows = (section.drinks || []).map(d => {
         const i = idx++;
         return `<div class="drink-row" style="--accent:${d.accent};--shadow:${d.shadow}">
           <div class="drink-cup">${cup(d, i)}</div>
@@ -410,25 +507,41 @@ function render(data) {
           </div>
           <div class="drink-price">${d.price}</div>
         </div>`;
-      })
-    ]);
+      }).join('');
+      const bg  = section.labelBg    || 'transparent';
+      const col = section.labelColor || 'rgba(255,255,255,0.75)';
+      return `<div class="section-group" style="flex:${section.drinks.length}">
+        <div class="section-label" style="background:${bg};color:${col}">${section.title}</div>
+        <div class="section-drinks">${drinkRows}</div>
+      </div>`;
+    });
 
-  document.getElementById('drink-list').innerHTML = rows.join('');
+  document.getElementById('drink-list').innerHTML = groups.join('');
 
   // Add-ons footer
-  const syrups = data.syrups || [];
-  const milks  = data.milks  || [];
+  const syrups      = data.syrups      || [];
+  const milks       = data.milks       || [];
+  const moninSyrups = data.moninSyrups || [];
   if (syrups.length || milks.length) {
+    const itemSpan = (name, cat) =>
+      `<span class="add-on-item" data-item="${name.toLowerCase()}" data-category="${cat}">${name}</span>`;
     document.getElementById('add-ons').innerHTML = `
-      <div class="add-ons-cta">Ask about our <strong>House-Made Flavors</strong> menu for pairing recommendations</div>
-      <div class="add-ons-cols">
-        <div class="add-ons-col">
-          <div class="add-ons-label">House Syrups <span>handcrafted</span></div>
-          <div class="add-ons-items">${syrups.join('<br>')}</div>
-        </div>
-        <div class="add-ons-col">
-          <div class="add-ons-label">Milks</div>
-          <div class="add-ons-items">${milks.join('<br>')}</div>
+      <div class="add-ons-label-col">Add-ins</div>
+      <div class="add-ons-body">
+        <div class="add-ons-cta">Ask about our <strong>House-Made Flavors</strong> menu for pairing recommendations</div>
+        <div class="add-ons-cols">
+          <div class="add-ons-col">
+            <div class="add-ons-label">House Syrups <span>handcrafted</span></div>
+            <div class="add-ons-items">${syrups.map(n => itemSpan(n, 'house syrup')).join('')}</div>
+          </div>
+          <div class="add-ons-col">
+            <div class="add-ons-label">Milks</div>
+            <div class="add-ons-items">${milks.map(n => itemSpan(n, 'milk')).join('')}</div>
+          </div>
+          <div class="add-ons-col monin" id="monin-col">
+            <div class="add-ons-label">Also available</div>
+            <div class="add-ons-items" id="monin-items">${moninSyrups.map(n => itemSpan(n, 'monin syrup')).join('')}</div>
+          </div>
         </div>
       </div>`;
   }
@@ -436,8 +549,43 @@ function render(data) {
 
 fetch('/menu.json')
   .then(r => r.json())
-  .then(render)
+  .then(data => { render(data); pollAvailability(); })
   .catch(e => console.error('menu.json load failed', e));
+
+// ── Availability polling ─────────────────────────────────
+function applyAvailability(items) {
+  // Repopulate Monin column from live sheet data if we got categorized items
+  const moninItems = items.filter(i => i.category === 'monin syrup');
+  if (moninItems.length) {
+    const moninEl = document.getElementById('monin-items');
+    if (moninEl) {
+      moninEl.innerHTML = moninItems.map(({ name }) =>
+        `<span class="add-on-item" data-item="${name.toLowerCase()}" data-category="monin syrup">${name}</span>`
+      ).join('');
+    }
+  }
+
+  // Reset sold-out state, then re-apply
+  document.querySelectorAll('.add-on-item').forEach(el => el.classList.remove('sold-out'));
+  items.filter(i => !i.available).forEach(({ name }) => {
+    document.querySelectorAll('.add-on-item').forEach(el => {
+      if (el.dataset.item === name.toLowerCase()) el.classList.add('sold-out');
+    });
+  });
+}
+
+function pollAvailability() {
+  fetch('/api/availability')
+    .then(r => r.json())
+    .then(({ items = [] }) => applyAvailability(items))
+    .catch(e => console.warn('availability poll failed:', e.message));
+}
+
+// Poll every 60 seconds (initial poll is triggered directly after render above)
+setInterval(pollAvailability, 60_000);
+
+// Full page reload every 5 minutes to pick up menu/config changes
+setInterval(() => window.location.reload(), 5 * 60 * 1000);
 </script>
 </body>
 </html>

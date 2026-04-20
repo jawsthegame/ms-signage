@@ -5,9 +5,11 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const SONOS_IP = process.env.SONOS_IP || null;
-const MENU_ONLY = process.env.MENU_ONLY === 'true';
+const PORT      = process.env.PORT            || 3000;
+const SONOS_IP  = process.env.SONOS_IP        || null;
+const MENU_ONLY = process.env.MENU_ONLY       === 'true';
+const SHEET_ID  = process.env.GOOGLE_SHEET_ID || null;
+const SHEET_KEY = process.env.GOOGLE_API_KEY  || null;
 
 let sonosDevice = null;
 let sonosHost = null;
@@ -104,7 +106,7 @@ app.get('/api/septa', async (req, res) => {
         const alertRes = await axios.get(
           'https://api.septa.org/api/Alerts/get_alert_data.php?route_id=bus_route_28'
         );
-        const alerts = alertRes.data?.alerts || [];
+        const alerts = (alertRes.data && alertRes.data.alerts) || [];
         if (result.bus28.length && alerts.some(a => !!a.current_message)) {
           console.log('SEPTA bus: alert active on route 28');
           result.bus28[0].status = 'Alert';
@@ -130,7 +132,7 @@ app.get('/api/septa', async (req, res) => {
       ]);
 
       if (stopCoords) {
-        const allBuses = tvRes.data?.bus || [];
+        const allBuses = (tvRes.data && tvRes.data.bus) || [];
         console.log(`TransitView: ${allBuses.length} active buses on route 28`);
 
         // Score every bus: distance to stop + heading check
@@ -220,7 +222,7 @@ async function fetchStopCoords(stopId) {
       { timeout: 5000 }
     );
     const stop = (r.data || [])[0];
-    if (stop?.lat && stop?.lng) {
+    if (stop && stop.lat && stop.lng) {
       busStopCoords = { lat: parseFloat(stop.lat), lng: parseFloat(stop.lng) };
       console.log(`Bus stop ${stopId} coords cached: ${JSON.stringify(busStopCoords)}`);
     }
@@ -334,6 +336,53 @@ app.get('/api/sonos/art', async (req, res) => {
   }
 });
 
+// --- Google Sheets (shared cache) ---
+// Sheet layout: A=category, B=name, C=description, D=available (optional, default TRUE)
+// Categories: "house syrup", "monin syrup", "milk", etc.
+let sheetRows    = null;   // parsed rows after header
+let sheetCacheTs = 0;
+const SHEET_TTL  = 60_000;
+
+async function fetchSheetRows() {
+  const now = Date.now();
+  if (sheetRows && (now - sheetCacheTs) < SHEET_TTL) return sheetRows;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A:D?key=${SHEET_KEY}`;
+  const { data } = await axios.get(url, { timeout: 8000 });
+  const [, ...rows] = data.values || [];
+  sheetRows    = rows
+    .filter(r => r[1] && r[1].trim())
+    .map(([cat = '', name = '', desc = '', avail = 'TRUE']) => ({
+      category:  cat.trim().toLowerCase(),
+      name:      name.trim(),
+      description: desc.trim(),
+      available: !['false', '0', 'no'].includes(avail.trim().toLowerCase()),
+    }));
+  sheetCacheTs = now;
+  console.log(`Sheets: fetched ${sheetRows.length} rows`);
+  return sheetRows;
+}
+
+app.get('/api/availability', async (req, res) => {
+  if (!SHEET_ID || !SHEET_KEY) return res.json({ items: [], unconfigured: true });
+  try {
+    const rows  = await fetchSheetRows();
+    const items = rows.map(r => ({
+      id:        r.name.toLowerCase().replace(/\s+/g, '-'),
+      name:      r.name,
+      available: r.available,
+      category:  r.category,
+    }));
+    const soldOut = items.filter(i => !i.available).map(i => i.name);
+    console.log(`Availability: ${items.length} items, sold out: [${soldOut.join(', ') || 'none'}]`);
+    res.json({ items });
+  } catch (err) {
+    console.error('Sheets availability error:', err.message);
+    res.json(sheetRows
+      ? { items: sheetRows.map(r => ({ id: r.name.toLowerCase().replace(/\s+/g, '-'), name: r.name, available: r.available })) }
+      : { items: [], error: err.message });
+  }
+});
+
 // --- Drink specials ---
 app.get('/api/specials', (req, res) => {
   try {
@@ -345,7 +394,7 @@ app.get('/api/specials', (req, res) => {
 });
 
 // --- Generic list slides (teas, syrups, etc.) ---
-// Serves any <name>.json file from the project root as a list slide.
+// Item data always comes from <name>.json — Sheets is only used for availability.
 app.get('/api/list/:name', (req, res) => {
   const name = (req.params.name || '').replace(/[^a-z0-9_-]/gi, '');
   if (!name) return res.status(400).json({ error: 'invalid name' });

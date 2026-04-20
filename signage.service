@@ -1,0 +1,15 @@
+[Unit]
+Description=Morning Static Signage
+After=network.target
+
+[Service]
+Type=simple
+User=tom
+WorkingDirectory=/home/tom/app
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+EnvironmentFile=/home/tom/app/.env
+
+[Install]
+WantedBy=multi-user.target

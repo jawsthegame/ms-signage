@@ -1,0 +1,17 @@
+{
+  "title": "Monin Syrups",
+  "items": [
+    { "name": "Vanilla",           "description": "classic · French · sugar-free" },
+    { "name": "Caramel",           "description": "classic · salted" },
+    { "name": "Rose",              "description": "" },
+    { "name": "Peach",             "description": "" },
+    { "name": "Blackberry",        "description": "" },
+    { "name": "Toffee Nut",        "description": "" },
+    { "name": "Toasted Marshmallow", "description": "" },
+    { "name": "Pumpkin Spice",     "description": "" },
+    { "name": "Lavender",          "description": "" },
+    { "name": "Hazelnut",          "description": "" },
+    { "name": "Peppermint",        "description": "" },
+    { "name": "Caramel Apple Butter", "description": "" }
+  ]
+}

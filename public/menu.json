@@ -1,9 +1,11 @@
 {
-  "shop":  "Welcome to The Goat House",
+  "shop":  "Goat House",
   "venue": "Coffee by Morning Static · Elkins Park",
   "sections": [
     {
       "title": "Coffee",
+      "labelBg": "#2A0E00",
+      "labelColor": "#C86010",
       "drinks": [
         {
           "name":      "Drip",
@@ -41,7 +43,7 @@
           "accent":    "#E8A000",
           "shadow":    "#904000",
           "esp": 20, "milk": 80, "foam": 0,
-          "milkColor": "#0EB7F1",
+          "milkColor": "#7A5535",
           "vessel":    "mug"
           },
         {
@@ -55,7 +57,7 @@
         },
         {
           "name":      "Cortado",
-          "desc":      "½ espresso · ½ steamed milk",
+          "desc":      "half espresso · half steamed milk",
           "price":     "4",
           "accent":    "#DDAA22",
           "shadow":    "#906010",
@@ -64,7 +66,7 @@
         },
         {
           "name":      "Cappuccino",
-          "desc":      "⅓ espresso · ⅓ milk · ⅓ foam",
+          "desc":      "one third espresso · milk · foam",
           "price":     "4.5",
           "accent":    "#A888DC",
           "shadow":    "#503090",
@@ -88,21 +90,25 @@
           "shadow":    "#702010",
           "esp": 15, "milk": 78, "foam": 7,
           "vessel":    "mug"
-        },
-        {
-          "name":      "Mocha Latte",
-          "desc":      "espresso · chocolate · steamed milk · thin foam",
-          "price":     "5.5 / 6",
-          "accent":    "#CF5828",
-          "shadow":    "#702010",
-          "esp": 10, "choc": 14, "milk": 69, "foam": 7,
-          "vessel":    "mug"
         }
       ]
     },
     {
-      "title": "Tea",
+      "title": "Tea, Etc...",
+      "labelBg": "#061A06",
+      "labelColor": "#68A830",
       "drinks": [
+        {
+          "name":      "Hot Chocolate",
+          "desc":      "rich dark chocolate · steamed milk · foam",
+          "price":     "5",
+          "accent":    "#C06028",
+          "shadow":    "#602008",
+          "esp": 80, "milk": 15, "foam": 5,
+          "baseColor": "#2A0E04",
+          "crema":     false,
+          "vessel":    "mug"
+        },
         {
           "name":      "Locally Blended Tea",
           "desc":      "ask your barista for today's selection",
@@ -138,6 +144,7 @@
       ]
     }
   ],
-  "syrups": ["Honey Lavender", "Vanilla Bean", "Rosemary & Sea Salt", "Rose & Cardamom", "Dark Cinnamon"],
-  "milks":  ["Whole", "2%", "Oat", "Almond"]
+  "syrups":      ["Honey Lavender", "Vanilla Bean", "Rosemary & Sea Salt", "Rose & Cardamom", "Dark Cinnamon"],
+  "milks":       ["Whole", "2%", "Oat", "Almond"],
+  "moninSyrups": ["Vanilla", "Caramel", "Rose", "Peach", "Blackberry", "Toffee Nut", "Toasted Marshmallow", "Pumpkin Spice", "Lavender", "Hazelnut", "Peppermint", "Caramel Apple Butter"]
 }

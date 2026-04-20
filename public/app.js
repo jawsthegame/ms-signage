@@ -192,7 +192,12 @@ function statusClass(s) {
 }
 function formatStatus(s) {
   if (!s) return 'On Time';
-  if (s.toLowerCase() === 'on time') return 'On Time';
+  const l = s.toLowerCase().trim();
+  if (l === 'on time') return 'On Time';
+  if (l === 'l') return 'Late';
+  if (l === 'h') return 'Held';
+  // 999 min = SEPTA sentinel for "no real-time data"
+  if (/^999\s*min$/i.test(s)) return 'On Time';
   return s;
 }
 function formatDest(direction, destination) {
