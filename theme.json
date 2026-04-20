@@ -1,0 +1,17 @@
+{
+  "bg":           "#F5EFE4",
+  "bgAlt":        "#EDE5D6",
+  "text":         "#1C1008",
+  "textDim":      "rgba(28,16,8,0.55)",
+  "textMuted":    "rgba(28,16,8,0.38)",
+  "border":       "rgba(28,16,8,0.10)",
+  "borderMid":    "rgba(28,16,8,0.15)",
+  "borderDim":    "rgba(28,16,8,0.07)",
+  "fontDisplay":  "'Bebas Neue', sans-serif",
+  "fontBody":     "'Space Mono', monospace",
+  "brand":        "#A05A10",
+  "brandShadow":  "rgba(28,16,8,0.20)",
+  "brandWarm":    "rgba(120,60,8,0.85)",
+  "addinsColor":  "#7A4A18",
+  "soldOut":      "#CC2200"
+}

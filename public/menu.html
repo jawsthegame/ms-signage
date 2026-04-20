@@ -8,11 +8,29 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:           #080408;
+      --bg-alt:       #0A0A06;
+      --text:         #F0F0F0;
+      --text-dim:     rgba(255,255,255,0.45);
+      --text-muted:   rgba(255,255,255,0.35);
+      --border:       rgba(255,255,255,0.08);
+      --border-mid:   rgba(255,255,255,0.12);
+      --border-dim:   rgba(255,255,255,0.06);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Space Mono', monospace;
+      --brand:        #E8B84A;
+      --brand-shadow: #7A4A10;
+      --brand-warm:   rgba(255,220,160,0.9);
+      --addins-color: #A09050;
+      --sold-out:     #FF4422;
+    }
+
     html, body {
       height: 100%;
       overflow: hidden;
-      background: #080408;
-      color: #F0F0F0;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
     }
 
@@ -28,12 +46,12 @@
       align-items: center;
       justify-content: space-between;
       padding: clamp(10px, 2vmin, 32px) clamp(16px, 4vmin, 64px);
-      border-bottom: 2px solid rgba(255,255,255,0.08);
+      border-bottom: 2px solid var(--border);
       flex-shrink: 0;
     }
 
     .menu-shop {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(32px, 7vmin, 120px);
       letter-spacing: 0.22em;
       color: rgba(255,255,255,0.9);
@@ -41,20 +59,20 @@
     }
 
     .menu-venue {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(13px, 2.8vmin, 42px);
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      color: var(--text-dim);
       margin-top: 0.4em;
     }
 
     .menu-venue .brand {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: 1.5em;
       letter-spacing: 0.18em;
-      color: #E8B84A;
-      text-shadow: 1px 1px 0 #7A4A10;
+      color: var(--brand);
+      text-shadow: 1px 1px 0 var(--brand-shadow);
       vertical-align: baseline;
     }
 
@@ -121,7 +139,7 @@
     }
 
     .drink-name {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(26px, 5vmin, 100px);
       line-height: 0.88;
       letter-spacing: 0.025em;
@@ -130,7 +148,7 @@
     }
 
     .drink-desc {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(16px, 2.1vmin, 42px);
       letter-spacing: 0.04em;
       text-transform: none;
@@ -142,7 +160,7 @@
 
     /* ── Price ───────────────────────────────── */
     .drink-price {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(26px, 5vmin, 100px);
       letter-spacing: 0.04em;
       color: var(--accent);
@@ -155,7 +173,7 @@
     .section-group {
       display: flex;
       min-height: 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--border-dim);
     }
     .section-group:first-child { border-top: none; }
 
@@ -167,11 +185,11 @@
       width: clamp(40px, 5.5vmin, 80px);
       writing-mode: vertical-lr;
       transform: rotate(180deg);
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(22px, 4.5vmin, 72px);
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      border-right: 1px solid rgba(255,255,255,0.08);
+      border-right: 1px solid var(--border);
     }
 
     .section-drinks {
@@ -183,7 +201,7 @@
 
     /* ── Drink subtitle ───────────────────────── */
     .drink-subtitle {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(7px, min(0.9vw, 1.1vh), 14px);
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -194,7 +212,7 @@
 
     /* ── Add-ons footer ─────────────────────── */
     .add-ons {
-      border-top: 2px solid rgba(255,255,255,0.12);
+      border-top: 2px solid var(--border-mid);
       flex-shrink: 0;
       display: flex;
       flex-direction: row;
@@ -208,13 +226,13 @@
       width: clamp(40px, 5.5vmin, 80px);
       writing-mode: vertical-lr;
       transform: rotate(180deg);
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(22px, 4.5vmin, 72px);
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      background: #0A0A06;
-      color: #A09050;
-      border-right: 1px solid rgba(255,255,255,0.08);
+      background: var(--bg-alt);
+      color: var(--addins-color);
+      border-right: 1px solid var(--border);
     }
 
     .add-ons-body {
@@ -224,11 +242,11 @@
     }
 
     .add-ons-body .add-ons-cta {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(9px, 1.2vmin, 18px);
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: var(--text-muted);
       margin-bottom: clamp(4px, 0.7vmin, 12px);
     }
 
@@ -244,7 +262,7 @@
     }
 
     .add-ons-label {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(14px, 2.2vmin, 38px);
       letter-spacing: 0.32em;
       color: rgba(255,255,255,0.9);
@@ -252,16 +270,16 @@
     }
 
     .add-ons-label span {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(9px, 1.2vmin, 18px);
       letter-spacing: 0.15em;
-      color: rgba(255,255,255,0.35);
+      color: var(--text-muted);
       margin-left: 0.5em;
       vertical-align: middle;
     }
 
     .add-ons-items {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-body);
       font-size: clamp(14px, 2.6vmin, 38px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -271,19 +289,18 @@
     }
 
     .add-ons-cols .add-ons-col:first-child .add-ons-items {
-      color: rgba(255,220,160,0.9);
+      color: var(--brand-warm);
     }
-
 
     /* Monin column — de-emphasized, inline wrapping list */
     .add-ons-col.monin {
       grid-column: 1 / -1;  /* span full width */
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--border-dim);
       padding-top: clamp(6px, 1vmin, 16px);
       margin-top: clamp(4px, 0.8vmin, 12px);
     }
     .add-ons-col.monin .add-ons-label {
-      color: rgba(255,255,255,0.35);
+      color: var(--text-muted);
       font-size: clamp(14px, 2.4vmin, 40px);
       display: inline;
       margin-right: 0.6em;
@@ -325,7 +342,7 @@
       content: 'OUT';
       display: inline-block;
       font-size: 0.62em;
-      color: #FF4422;
+      color: var(--sold-out);
       letter-spacing: 0.14em;
       margin-left: 0.6em;
       vertical-align: middle;
@@ -547,10 +564,20 @@ function render(data) {
   }
 }
 
-fetch('/menu.json')
-  .then(r => r.json())
-  .then(data => { render(data); pollAvailability(); })
-  .catch(e => console.error('menu.json load failed', e));
+function applyTheme(theme) {
+  const root = document.documentElement;
+  const toVar = k => '--' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase());
+  Object.entries(theme).forEach(([k, v]) => root.style.setProperty(toVar(k), v));
+}
+
+Promise.all([
+  fetch('/menu.json').then(r => r.json()),
+  fetch('/api/theme').then(r => r.json()).catch(() => ({})),
+]).then(([menuData, theme]) => {
+  applyTheme(theme);
+  render(menuData);
+  pollAvailability();
+}).catch(e => console.error('init failed', e));
 
 // ── Availability polling ─────────────────────────────────
 function applyAvailability(items) {

@@ -406,6 +406,16 @@ app.get('/api/list/:name', (req, res) => {
   }
 });
 
+// --- Theme ---
+app.get('/api/theme', (req, res) => {
+  try {
+    const theme = JSON.parse(fs.readFileSync(path.join(__dirname, 'theme.json'), 'utf8'));
+    res.json(theme);
+  } catch {
+    res.json({});
+  }
+});
+
 // --- Config ---
 app.get('/api/config', (req, res) => {
   try {
