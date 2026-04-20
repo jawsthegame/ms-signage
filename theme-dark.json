@@ -13,5 +13,6 @@
   "brandShadow":  "#7A4A10",
   "brandWarm":    "rgba(255,220,160,0.9)",
   "addinsColor":  "#A09050",
-  "soldOut":      "#FF4422"
+  "soldOut":      "#FF4422",
+  "divider":      "#1E1E1E"
 }

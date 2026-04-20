@@ -1,11 +1,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Colors */
-  --bg:          #0C0C0C;
+  /* Colors — defaults match theme.json; overridden at runtime by /api/theme */
+  --bg:          #080408;
+  --bg-alt:      #0A0A06;
   --text:        #F0F0F0;
-  --text-dim:    #777777;
-  --text-faint:  #666666;
+  --text-dim:    rgba(255,255,255,0.45);
+  --text-muted:  rgba(255,255,255,0.35);
+  --text-faint:  rgba(255,255,255,0.25);
+  --border:      rgba(255,255,255,0.08);
+  --border-mid:  rgba(255,255,255,0.12);
   --divider:     #1E1E1E;
   --on-time:     #22C55E;
   --delayed:     #F59E0B;
@@ -134,9 +138,9 @@ html, body {
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.5vw, 24px);
-  background: #080408;
+  background: var(--bg);
   padding: clamp(14px, 2.5vh, 36px) var(--septa-pad, var(--pad-h));
-  border-bottom: 2px solid rgba(255,255,255,0.1);
+  border-bottom: 2px solid var(--border-mid);
   margin-bottom: clamp(24px, 3.5vh, 52px);
   margin-left:  calc(-1 * var(--septa-pad, var(--pad-h)));
   margin-right: calc(-1 * var(--septa-pad, var(--pad-h)));
@@ -363,13 +367,13 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: #080408;
+  background: var(--bg);
 }
 
 /* Category header strip */
 .right-category-header {
   flex-shrink: 0;
-  background: #080408;
+  background: var(--bg);
   padding: clamp(14px, 2.5vh, 36px) clamp(22px, 3vw, 52px);
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(28px, 4vh, 58px);
@@ -506,7 +510,7 @@ html, body {
 /* Category title strip */
 #featured-title {
   flex-shrink: 0;
-  background: #080408;
+  background: var(--bg);
   padding: clamp(14px, 2.5vh, 36px) clamp(24px, 3vw, 52px);
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(28px, 4vh, 58px);
@@ -523,7 +527,7 @@ html, body {
   flex-direction: column;
   gap: 2px;
   padding-bottom: clamp(12px, 2vh, 32px);
-  background: #080408;
+  background: var(--bg);
 }
 
 /* Each item = one Blue Note "cover strip" */
