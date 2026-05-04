@@ -8,28 +8,32 @@
           "ingredients": "chai latte · rose syrup",
           "price": "6",
           "temp": "hot",
-          "theme": "magenta"
+          "theme": "magenta",
+          "requires": ["Rose"]
         },
         {
           "name": "West-End Girls",
           "ingredients": "earl grey · oat milk · lavender syrup",
           "price": "5",
           "temp": "hot",
-          "theme": "amber"
+          "theme": "amber",
+          "requires": ["Lavender", "Earl Grey", "Oat"]
         },
         {
           "name": "good kid, m.A.A.d berry",
           "ingredients": "espresso · tonic water · blackberry syrup",
           "price": "4.5",
           "temp": "iced",
-          "theme": "yellow"
+          "theme": "yellow",
+          "requires": ["Blackberry"]
         },
         {
           "name": "Lazing on a Sunny Afternoon",
           "ingredients": "citrus green · peach syrup",
           "price": "4",
           "temp": "iced",
-          "theme": "coral"
+          "theme": "coral",
+          "requires": ["Peach", "Citrus Green"]
         }
       ]
     }

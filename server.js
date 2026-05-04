@@ -338,10 +338,18 @@ app.get('/api/sonos/art', async (req, res) => {
 
 // --- Google Sheets (shared cache) ---
 // Sheet layout: A=category, B=name, C=description, D=available (optional, default TRUE)
-// Categories: "house syrup", "monin syrup", "milk", etc.
+// Categories: "house syrup", "monin syrup", "milk", "tea", "sandwich", etc.
 let sheetRows    = null;   // parsed rows after header
 let sheetCacheTs = 0;
 const SHEET_TTL  = 60_000;
+
+// Returns false if any item listed in item.requires is explicitly unavailable in the sheet.
+// Items not found in the sheet are assumed available.
+function evaluateRequires(item, allRows) {
+  if (!item.requires || !item.requires.length) return true;
+  const nameMap = new Map(allRows.map(r => [r.name.toLowerCase(), r.available]));
+  return item.requires.every(req => nameMap.get(req.toLowerCase()) !== false);
+}
 
 async function fetchSheetRows() {
   const now = Date.now();
@@ -384,9 +392,23 @@ app.get('/api/availability', async (req, res) => {
 });
 
 // --- Drink specials ---
-app.get('/api/specials', (req, res) => {
+app.get('/api/specials', async (req, res) => {
   try {
     const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'specials.json'), 'utf8'));
+
+    if (SHEET_ID && SHEET_KEY) {
+      try {
+        const rows = await fetchSheetRows();
+        for (const section of (data.items || [])) {
+          for (const drink of (section.drinks || [])) {
+            if (!evaluateRequires(drink, rows)) drink.available = false;
+          }
+        }
+      } catch (sheetErr) {
+        console.warn('Specials: sheet check failed —', sheetErr.message);
+      }
+    }
+
     res.json(data);
   } catch {
     res.json({ featured: null, items: [] });
@@ -394,12 +416,48 @@ app.get('/api/specials', (req, res) => {
 });
 
 // --- Generic list slides (teas, syrups, etc.) ---
-// Item data always comes from <name>.json — Sheets is only used for availability.
-app.get('/api/list/:name', (req, res) => {
+// Item data comes from <name>.json. If the JSON has a "sheetCategory" and Sheets
+// is configured, items are filtered by availability — an empty result hides the slide.
+app.get('/api/list/:name', async (req, res) => {
   const name = (req.params.name || '').replace(/[^a-z0-9_-]/gi, '');
   if (!name) return res.status(400).json({ error: 'invalid name' });
   try {
     const data = JSON.parse(fs.readFileSync(path.join(__dirname, `${name}.json`), 'utf8'));
+
+    if (SHEET_ID && SHEET_KEY) {
+      try {
+        const rows = await fetchSheetRows();
+
+        // ── Per-category availability (sheetCategory) ──────────────
+        if (data.sheetCategory) {
+          const cat      = data.sheetCategory.trim().toLowerCase();
+          const availMap = new Map(
+            rows.filter(r => r.category === cat)
+                .map(r => [r.name.toLowerCase(), r.available])
+          );
+          if (availMap.size > 0) {
+            data.items = data.items.map(item => ({
+              ...item,
+              available: availMap.has(item.name.toLowerCase())
+                ? availMap.get(item.name.toLowerCase())
+                : true,   // not in sheet → default available
+            }));
+          }
+        }
+
+        // ── Cross-category ingredient dependencies (requires) ──────
+        data.items = data.items.map(item => ({
+          ...item,
+          available: item.available !== false && evaluateRequires(item, rows),
+        }));
+
+        const out = data.items.filter(i => !i.available).length;
+        if (out) console.log(`List "${name}": ${out}/${data.items.length} sold out`);
+      } catch (sheetErr) {
+        console.warn(`List "${name}": sheet check failed —`, sheetErr.message);
+      }
+    }
+
     res.json(data);
   } catch {
     res.status(404).json({ title: '', items: [] });

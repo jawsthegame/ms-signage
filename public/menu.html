@@ -90,10 +90,12 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      padding-bottom: clamp(6px, 1vmin, 16px);
     }
 
     .drink-row {
       flex: 1;
+      min-height: 0;
       display: grid;
       grid-template-columns: clamp(40px, 9vmin, 150px) 1fr auto;
       align-items: center;
@@ -198,6 +200,7 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
+      min-height: 0;
     }
 
     /* ── Drink subtitle ───────────────────────── */
@@ -550,7 +553,7 @@ function render(data) {
         <div class="add-ons-cols">
           <div class="add-ons-col">
             <div class="add-ons-label">House Syrups <span>handcrafted</span></div>
-            <div class="add-ons-items">${syrups.map(n => itemSpan(n, 'house syrup')).join('')}</div>
+            <div class="add-ons-items" id="house-syrup-items">${syrups.map(n => itemSpan(n, 'house syrup')).join('')}</div>
           </div>
           <div class="add-ons-col">
             <div class="add-ons-label">Milks</div>
@@ -582,7 +585,16 @@ Promise.all([
 
 // ── Availability polling ─────────────────────────────────
 function applyAvailability(items) {
-  // Repopulate Monin column from live sheet data if we got categorized items
+  // Repopulate house syrups column from live sheet data
+  const houseItems = items.filter(i => i.category === 'house syrup');
+  if (houseItems.length) {
+    const el = document.getElementById('house-syrup-items');
+    if (el) el.innerHTML = houseItems.map(({ name }) =>
+      `<span class="add-on-item" data-item="${name.toLowerCase()}" data-category="house syrup">${name}</span>`
+    ).join('');
+  }
+
+  // Repopulate Monin column from live sheet data
   const moninItems = items.filter(i => i.category === 'monin syrup');
   if (moninItems.length) {
     const moninEl = document.getElementById('monin-items');

@@ -1,10 +1,35 @@
 {
   "title": "House-Made Flavors",
   "items": [
-    { "name": "Heaven or Las Vegas",                           "description": "matcha latte · rose · cardamom",          "theme": "bn-blue" },
-    { "name": "Midnight Marauders",                            "description": "cappuccino · cinnamon · brown sugar",     "theme": "bn-red" },
-    { "name": "In a Silent Way",                               "description": "nitro · rosemary · sea salt",            "theme": "bn-green" },
-    { "name": "This Is Happening",                             "description": "café latte · vanilla bean · turbinado",  "theme": "bn-amber" },
-    { "name": "Ladies and Gentlemen We Are Floating in Space", "description": "flat white · honey · lavender",          "theme": "bn-violet" }
+    {
+      "name": "Heaven or Las Vegas",
+      "description": "matcha latte · rose · cardamom",
+      "theme": "bn-blue",
+      "requires": ["Rose Cardamom"]
+    },
+    {
+      "name": "Midnight Marauders",
+      "description": "cappuccino · cinnamon · brown sugar",
+      "theme": "bn-red",
+      "requires": ["Dark Cinnamon"]
+    },
+    {
+      "name": "In a Silent Way",
+      "description": "nitro · rosemary · sea salt",
+      "theme": "bn-green",
+      "requires": ["Rosemary Sea Salt"]
+    },
+    {
+      "name": "This Is Happening",
+      "description": "café latte · vanilla bean · turbinado",
+      "theme": "bn-amber",
+      "requires": ["Vanilla Bean"]
+    },
+    {
+      "name": "Ladies and Gentlemen We Are Floating in Space",
+      "description": "flat white · honey · lavender",
+      "theme": "bn-violet",
+      "requires": ["Honey Lavender"]
+    }
   ]
 }

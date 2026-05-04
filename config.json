@@ -1,6 +1,6 @@
 {
   "shopName": "Morning Static @ The Goat House",
-  "loopOrder": ["nowplaying", "septa", "list:syrups"],
+  "loopOrder": ["nowplaying", "septa", "list:syrups", "list:sandwiches"],
   "slideDuration": {
     "septa":      20000,
     "nowplaying": 10000,

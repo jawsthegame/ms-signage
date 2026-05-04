@@ -139,12 +139,22 @@ html, body {
   align-items: center;
   gap: clamp(12px, 1.5vw, 24px);
   background: var(--bg);
-  padding: clamp(14px, 2.5vh, 36px) var(--septa-pad, var(--pad-h));
+  padding: clamp(8px, 1.2vh, 20px) var(--septa-pad, var(--pad-h));
   border-bottom: 2px solid var(--border-mid);
-  margin-bottom: clamp(24px, 3.5vh, 52px);
+  margin-bottom: clamp(14px, 2vh, 32px);
   margin-left:  calc(-1 * var(--septa-pad, var(--pad-h)));
   margin-right: calc(-1 * var(--septa-pad, var(--pad-h)));
   margin-top: calc(-1 * clamp(24px, 3vh, 56px));
+}
+
+#septa-clock {
+  margin-left: auto;
+  font-size: clamp(32px, 3.5vw, 80px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 #left-septa .slide-label {
@@ -500,6 +510,14 @@ html, body {
 .right-item.dim       { opacity: 0.4; }
 .right-item.highlight { opacity: 1; }
 
+/* Sold-out specials */
+.right-item.sold-out  { opacity: 0.35; }
+.right-item.sold-out .right-item-name {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-shadow: none;
+}
+
 /* ── Featured list slide — Blue Note poster treatment ── */
 
 #left-featured {
@@ -526,7 +544,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding-bottom: clamp(12px, 2vh, 32px);
+  padding-bottom: clamp(24px, 3.5vh, 56px);
   background: var(--bg);
 }
 
@@ -632,6 +650,16 @@ html, body {
 .featured-item.theme-bn-violet .featured-item-rule  { background: #7C3ABA; }
 .featured-item.theme-bn-violet .featured-item-desc  { color: #7C3ABA; opacity: 0.9; }
 .featured-item.theme-bn-violet .featured-item-price { color: #7C3ABA; }
+
+/* ── Sold-out items ──────────────────────────────── */
+.featured-item.sold-out {
+  opacity: 0.45;
+}
+.featured-item.sold-out .featured-item-name {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-shadow: none;
+}
 
 /* ── Socials slide — concert / venue poster ──────── */
 #left-socials {
