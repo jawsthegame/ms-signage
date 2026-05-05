@@ -7,7 +7,21 @@
       "Bash(git commit:*)",
       "Bash(MOVES\" headline, waveform texture bg, Bebas Neue handles with magenta @:*)",
       "Bash(rm /Users/tom/repos/signage_claude/.git/index.lock)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Read(//usr/local/bin/**)",
+      "Bash(command -v node)",
+      "Bash(ls /Users/tom/repos/signage_claude/*.json)",
+      "Bash(curl -s http://localhost:3000/api/list/syrups)",
+      "Bash(/usr/local/bin/node -e \"const fs=require\\(''fs''\\); const d=fs.readFileSync\\(''/Users/tom/repos/signage_claude/syrups.json'',''utf8''\\); console.log\\(d.slice\\(0,200\\)\\); JSON.parse\\(d\\);\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(/usr/local/bin/node -e \":*)",
+      "Bash(curl -sv http://localhost:3000/api/list/syrups)",
+      "Bash(md5 /Users/tom/repos/signage_claude/syrups.json)",
+      "Bash(/usr/local/bin/node -e \"const d=require\\(''''fs''''\\).readFileSync\\(0,''''utf8''''\\); const p=JSON.parse\\(d\\); console.log\\(''''items:'''', p.items.length, p.items[0]?.name\\)\")",
+      "Bash(ls /Users/tom/repos/signage_claude/*.sh)",
+      "Bash(chmod +x /Users/tom/repos/signage_claude/start.sh)",
+      "Bash(chmod +x /Users/tom/repos/signage_claude/setup-cron.sh)",
+      "Bash(/Users/tom/repos/signage_claude/theme-dark.json:*)"
     ]
   }
 }
