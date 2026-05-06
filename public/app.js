@@ -25,6 +25,7 @@ let SOCIAL_ACCOUNTS = [];
 let SOCIAL_PLATFORM = 'Instagram';
 let SOCIAL_INTERVAL  = 2;
 let rotationCount    = 0;
+let septaCascadeDone = false;
 
 // ── DOM helpers ──────────────────────────────────────────
 function el(id) { return document.getElementById(id); }
@@ -263,13 +264,16 @@ function renderTrainList(containerId, trains, lineKey, headerText, hasError) {
   </div>`;
 
   const rows = trains.map((t, idx) => {
-    const { destName } = meta[idx];
+    const { destName, prevTime, newTime, timeChanged, prevStat, statusStr, statChanged } = meta[idx];
+    // Build from OLD value when animating a change, so the flap flips in the right direction
+    const displayTime   = (timeChanged && prevTime) ? prevTime   : newTime;
+    const displayStatus = (statChanged && prevStat) ? prevStat   : statusStr;
     return `<div class="train-row" data-idx="${idx}">
-      <span class="train-time">${buildFlapHTML(t.departTime)}</span>
+      <span class="train-time">${buildFlapHTML(displayTime)}</span>
       <span class="train-dest">
         <span class="dest-arrow">→</span>${buildFlapWord(destName)}
       </span>
-      <span class="train-status ${statusClass(t.status)}">${buildFlapStatus(formatStatus(t.status))}</span>
+      <span class="train-status ${statusClass(t.status)}">${buildFlapStatus(displayStatus)}</span>
     </div>`;
   }).join('');
 
@@ -481,7 +485,10 @@ function showLeft(name) {
   if (name === 'septa') {
     renderSepta();
     clearRightHighlight();
-    setTimeout(() => cascadeFlaps(el('left-septa')), 80);
+    if (!septaCascadeDone) {
+      septaCascadeDone = true;
+      setTimeout(() => cascadeFlaps(el('left-septa')), 80);
+    }
   }
   if (name === 'nowplaying') { renderNowPlaying(); clearRightHighlight(); }
   if (name === 'socials')    { renderSocials();    clearRightHighlight(); }
