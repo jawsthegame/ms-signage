@@ -888,6 +888,15 @@ html, body {
 }
 .flap-sep::after { display: none; }
 
+/* ── Clock colon blink ───────────────────────────── */
+@keyframes clock-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.clock-colon {
+  animation: clock-blink 1s step-start infinite;
+}
+
 /* ── Progress bar ────────────────────────────────── */
 #progress-bar {
   position: fixed;

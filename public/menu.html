@@ -60,12 +60,12 @@
 
     .menu-venue {
       font-family: var(--font-body);
-      font-size: clamp(11px, 2.2vmin, 36px);
+      font-size: clamp(16px, 3.2vmin, 52px);
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-dim);
       margin-top: 0.4em;
-      white-space: nowrap;
+      min-width: 0;
     }
 
     .menu-venue .brand {
@@ -368,10 +368,8 @@
 <div id="menu">
   <div class="menu-header">
     <div>
-      <div class="menu-shop">Welcome to Goat House</div>
-      <div class="menu-venue">Coffee by <span class="brand">Morning Static</span> · Elkins Park</div>
+      <div class="menu-venue">Coffee by <span class="brand">Morning Static</span></div>
     </div>
-    <img class="menu-logo" src="/morning-static-logo.png" alt="Morning Static">
   </div>
   <div class="drink-list" id="drink-list"></div>
   <div class="add-ons" id="add-ons"></div>
@@ -512,9 +510,8 @@ function cup(drink, idx) {
 // ── Render ───────────────────────────────────────────────
 function render(data) {
   // Header
-  document.querySelector('.menu-shop').textContent = data.shop || '';
   const venueEl = document.querySelector('.menu-venue');
-  venueEl.innerHTML = (data.venue || '').replace('Morning Static', '<span class="brand">Morning Static</span>');
+  venueEl.innerHTML = 'Coffee by <span class="brand">Morning Static</span>';
 
   let idx = 0;
   const groups = (data.sections || [{ title: data.title, drinks: data.drinks }])

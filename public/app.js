@@ -35,11 +35,11 @@ function updateClock() {
   const now = new Date();
   const h   = now.getHours();
   const m   = String(now.getMinutes()).padStart(2, '0');
-  const str = `${((h % 12) || 12)}:${m} ${h >= 12 ? 'PM' : 'AM'}`;
+  const html = `${((h % 12) || 12)}<span class="clock-colon">:</span>${m} ${h >= 12 ? 'PM' : 'AM'}`;
   const clockEl = el('clock');
-  if (clockEl) clockEl.textContent = str;
+  if (clockEl) clockEl.innerHTML = html;
   const septaClockEl = el('septa-clock');
-  if (septaClockEl) septaClockEl.textContent = str;
+  if (septaClockEl) septaClockEl.innerHTML = html;
 }
 setInterval(updateClock, 1000);
 updateClock();
