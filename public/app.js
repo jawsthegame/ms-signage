@@ -391,7 +391,7 @@ function renderRightSpecials() {
         <div class="right-item-rule"></div>
         <div class="right-item-bottom">
           <div class="right-item-ingredients">${drink.ingredients || ''}</div>
-          <div class="right-item-price">${parseFloat(drink.price)}</div>
+          ${drink.price ? `<div class="right-item-price">${parseFloat(drink.price)}</div>` : ''}
         </div>
       </div>`;
       flatIdx++;
