@@ -1,5 +1,6 @@
 {
   "title": "Locally Blended Teas",
+  "sheetCategory": "tea",
   "items": [
     { "name": "Earl Grey", "description": "black tea • bergamot • vanilla", "price": "" },
     { "name": "English Breakfast", "description": "black tea", "price": "" },

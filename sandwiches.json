@@ -1,0 +1,10 @@
+{
+  "title": "Weekend Baguette Sandwiches",
+  "sheetCategory": "sandwich",
+  "items": [
+    { "name": "Ham & Swiss",   "description": "european ham · swiss · cultured french butter" },
+    { "name": "Apple & Brie",  "description": "apple · brie · fig jam" },
+    { "name": "Caprese",       "description": "tomato · fresh mozz · basil · arugula · balsamic • sea salt • cracked pepper" },
+    { "name": "Pear & Swiss",  "description": "pear · swiss · arugula · fig jam" }
+  ]
+}

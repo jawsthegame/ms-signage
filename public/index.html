@@ -30,6 +30,7 @@
             <div class="septa-header">
               <img id="septa-logo" src="septa-logo.svg" alt="SEPTA" onerror="this.style.display='none'">
               <div class="slide-label">Elkins Park Station</div>
+              <div id="septa-clock"></div>
             </div>
             <div id="septa-grid" class="septa-grid">
               <div class="septa-col">
@@ -108,6 +109,15 @@
     <div id="progress-bar"></div>
 
   </div>
+  <script>
+    (function () {
+      fetch('/api/theme').then(r => r.json()).then(theme => {
+        const root = document.documentElement;
+        const toVar = k => '--' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase());
+        Object.entries(theme).forEach(([k, v]) => root.style.setProperty(toVar(k), v));
+      }).catch(() => {});
+    })();
+  </script>
   <script src="app.js"></script>
 </body>
 </html>

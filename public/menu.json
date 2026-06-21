@@ -37,9 +37,9 @@
           "vessel":    "demitasse"
         },
         {
-          "name":      "Americano",
+          "name":      "Americano | Long Black",
           "desc":      "espresso · hot water",
-          "price":     "3.75",
+          "price":     "3.5",
           "accent":    "#E8A000",
           "shadow":    "#904000",
           "esp": 20, "milk": 80, "foam": 0,
@@ -90,6 +90,15 @@
           "shadow":    "#702010",
           "esp": 15, "milk": 78, "foam": 7,
           "vessel":    "mug"
+        },
+        {
+          "name":      "Mocha",
+          "desc":      "espresso · steamed milk · housemade mocha syrup • thin foam",
+          "price":     "5.5 / 6",
+          "accent":    "#C68642",
+          "shadow":    "#702010",
+          "esp": 15, "milk": 78, "foam": 7, "choc": 7,
+          "vessel":    "mug"
         }
       ]
     },
@@ -98,17 +107,6 @@
       "labelBg": "#061A06",
       "labelColor": "#68A830",
       "drinks": [
-        {
-          "name":      "Hot Chocolate",
-          "desc":      "rich dark chocolate · steamed milk · foam",
-          "price":     "5",
-          "accent":    "#C06028",
-          "shadow":    "#602008",
-          "esp": 80, "milk": 15, "foam": 5,
-          "baseColor": "#2A0E04",
-          "crema":     false,
-          "vessel":    "mug"
-        },
         {
           "name":      "Locally Blended Tea",
           "desc":      "ask your barista for today's selection",
@@ -139,6 +137,17 @@
           "esp": 30, "milk": 64, "foam": 6,
           "baseColor": "#1A4010",
           "milkColor": "#8A9870",
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Hot Chocolate",
+          "desc":      "rich dark chocolate · steamed milk · foam",
+          "price":     "4 / 5",
+          "accent":    "#C06028",
+          "shadow":    "#602008",
+          "esp": 80, "milk": 15, "foam": 5,
+          "baseColor": "#2A0E04",
+          "crema":     false,
           "vessel":    "mug"
         }
       ]

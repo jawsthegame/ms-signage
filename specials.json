@@ -8,7 +8,8 @@
           "ingredients": "try it with strawberry purée and/or sparkling water",
           "price": "",
           "temp": "iced",
-          "theme": "yellow"
+          "theme": "yellow",
+          "requires": ["Blackberry"]
         },
         {
           "name": "good kid, m.A.A.d cherry",
@@ -29,7 +30,8 @@
           "ingredients": "unsweetened · light + refreshing",
           "price": "",
           "temp": "iced",
-          "theme": "coral"
+          "theme": "coral",
+          "requires": ["Peach", "Citrus Green"]
         }
       ]
     }

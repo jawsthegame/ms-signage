@@ -8,6 +8,7 @@ let LEFT_DURATION = {
 };
 const SEPTA_REFRESH  = 60 * 1000;
 const SONOS_REFRESH  = 6  * 1000;
+const LIST_REFRESH   = 60 * 1000;
 
 // ── State ────────────────────────────────────────────────
 const data = { septa: null, specials: null, sonos: null, lists: {} };
@@ -17,12 +18,14 @@ let slideTimer   = null;
 let progressRaf  = null;
 let progressStart, progressDuration;
 
-let LEFT_ORDER = ['nowplaying', 'septa', 'list:teas', 'list:syrups'];
+let LEFT_ORDER   = ['nowplaying', 'septa', 'list:teas', 'list:syrups'];
+let discoveredLists = [];
 let CASCADE_CFG = { delayPerChar: 28, minSteps: 2, maxSteps: 4 };
 let SOCIAL_ACCOUNTS = [];
 let SOCIAL_PLATFORM = 'Instagram';
 let SOCIAL_INTERVAL  = 2;
 let rotationCount    = 0;
+let septaCascadeDone = false;
 
 // ── DOM helpers ──────────────────────────────────────────
 function el(id) { return document.getElementById(id); }
@@ -32,10 +35,14 @@ function updateClock() {
   const now = new Date();
   const h   = now.getHours();
   const m   = String(now.getMinutes()).padStart(2, '0');
-  el('clock').textContent = `${((h % 12) || 12)}:${m} ${h >= 12 ? 'PM' : 'AM'}`;
+  const html = `${((h % 12) || 12)}<span class="clock-colon">:</span>${m} ${h >= 12 ? 'PM' : 'AM'}`;
+  const clockEl = el('clock');
+  if (clockEl) clockEl.innerHTML = html;
+  const septaClockEl = el('septa-clock');
+  if (septaClockEl) septaClockEl.innerHTML = html;
 }
-// setInterval(updateClock, 1000);
-// updateClock();
+setInterval(updateClock, 1000);
+updateClock();
 
 // ── Split-flap ───────────────────────────────────────────
 const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -257,13 +264,16 @@ function renderTrainList(containerId, trains, lineKey, headerText, hasError) {
   </div>`;
 
   const rows = trains.map((t, idx) => {
-    const { destName } = meta[idx];
+    const { destName, prevTime, newTime, timeChanged, prevStat, statusStr, statChanged } = meta[idx];
+    // Build from OLD value when animating a change, so the flap flips in the right direction
+    const displayTime   = (timeChanged && prevTime) ? prevTime   : newTime;
+    const displayStatus = (statChanged && prevStat) ? prevStat   : statusStr;
     return `<div class="train-row" data-idx="${idx}">
-      <span class="train-time">${buildFlapHTML(t.departTime)}</span>
+      <span class="train-time">${buildFlapHTML(displayTime)}</span>
       <span class="train-dest">
         <span class="dest-arrow">→</span>${buildFlapWord(destName)}
       </span>
-      <span class="train-status ${statusClass(t.status)}">${buildFlapStatus(formatStatus(t.status))}</span>
+      <span class="train-status ${statusClass(t.status)}">${buildFlapStatus(displayStatus)}</span>
     </div>`;
   }).join('');
 
@@ -350,7 +360,8 @@ function renderFeatured(listName) {
   // Poster-strip rows
   let html = '';
   list.items.forEach(item => {
-    html += `<div class="featured-item theme-${item.theme || 'bn-blue'}">
+    const soldOut = item.available === false;
+    html += `<div class="featured-item theme-${item.theme || 'bn-blue'}${soldOut ? ' sold-out' : ''}">
       <div class="featured-item-name">${item.name}</div>
       <div class="featured-item-rule"></div>
       <div class="featured-item-bottom">
@@ -385,7 +396,8 @@ function renderRightSpecials() {
     for (const drink of (cat.drinks || [])) {
       const badge = drink.temp === 'iced' ? '❄ Iced' : '● Hot';
 
-      html += `<div class="right-item theme-${drink.theme || 'magenta'}" data-idx="${flatIdx}">
+      const soldOut = drink.available === false;
+      html += `<div class="right-item theme-${drink.theme || 'magenta'}${soldOut ? ' sold-out' : ''}" data-idx="${flatIdx}">
         <div class="right-item-badge">${badge}</div>
         <div class="right-item-name">${drink.name}</div>
         <div class="right-item-rule"></div>
@@ -445,7 +457,11 @@ function getNextLeft() {
 
     if (candidate === 'nowplaying' && !isPlaying()) continue;
     const ln = listName(candidate);
-    if (ln && !data.lists[ln]?.items?.length) continue;
+    if (ln) {
+      const items = data.lists[ln]?.items;
+      if (!items?.length) continue;                          // no items at all
+      if (items.every(i => i.available === false)) continue; // all sold out
+    }
     return candidate;
   }
   return 'septa'; // fallback
@@ -469,7 +485,10 @@ function showLeft(name) {
   if (name === 'septa') {
     renderSepta();
     clearRightHighlight();
-    setTimeout(() => cascadeFlaps(el('left-septa')), 80);
+    if (!septaCascadeDone) {
+      septaCascadeDone = true;
+      setTimeout(() => cascadeFlaps(el('left-septa')), 80);
+    }
   }
   if (name === 'nowplaying') { renderNowPlaying(); clearRightHighlight(); }
   if (name === 'socials')    { renderSocials();    clearRightHighlight(); }
@@ -530,7 +549,15 @@ async function fetchList(name) {
   } catch {
     data.lists[name] = null;
   }
-  if (leftCurrent === `list:${name}`) renderFeatured(name);
+  if (leftCurrent === `list:${name}`) {
+    const items = data.lists[name]?.items;
+    if (!items?.length || items.every(i => i.available === false)) {
+      // No items or all sold out — skip to next slide immediately
+      showLeft(getNextLeft());
+    } else {
+      renderFeatured(name);
+    }
+  }
 }
 
 async function fetchSonos() {
@@ -577,14 +604,16 @@ async function fetchConfig() {
 async function init() {
   await fetchConfig();
   // Discover which lists are needed from the loop order, then fetch everything in parallel
-  const listNames = [...new Set(LEFT_ORDER.map(listName).filter(Boolean))];
+  discoveredLists = [...new Set(LEFT_ORDER.map(listName).filter(Boolean))];
   await Promise.all([
     fetchSepta(), fetchSpecials(), fetchSonos(),
-    ...listNames.map(fetchList),
+    ...discoveredLists.map(fetchList),
   ]);
   showLeft(LEFT_ORDER[0] ?? 'septa');
-  setInterval(fetchSepta, SEPTA_REFRESH);
-  setInterval(fetchSonos, SONOS_REFRESH);
+  setInterval(fetchSepta,  SEPTA_REFRESH);
+  setInterval(fetchSonos,  SONOS_REFRESH);
+  setInterval(fetchSpecials, LIST_REFRESH);
+  setInterval(() => discoveredLists.forEach(fetchList), LIST_REFRESH);
 }
 
 init();
