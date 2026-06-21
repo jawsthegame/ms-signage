@@ -1,0 +1,86 @@
+name: Deploy to Raspberry Pis
+
+# Deploys the signage app to both kiosk Pis over Tailscale.
+#
+# Both Pis run identical code from /home/tom/app under the `signage`
+# systemd service. The specials-vs-menu behaviour is driven entirely by
+# each Pi's local .env (MENU_ONLY), which is NOT in git and is preserved
+# on the device (excluded from rsync below).
+#
+# Required GitHub secrets (Settings → Secrets and variables → Actions):
+#   TS_OAUTH_CLIENT_ID  — Tailscale OAuth client id
+#   TS_OAUTH_SECRET     — Tailscale OAuth client secret
+# See DEPLOY.md for the one-time Tailscale ACL / sudoers setup.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**.js'
+      - '**.json'
+      - '**.html'
+      - '**.css'
+      - '**.svg'
+      - '*.sh'
+      - 'signage.service'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+# Never run two deploys at once; let an in-flight deploy finish.
+concurrency:
+  group: deploy-pis
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - raspberrypi-specials
+          - raspberrypi-standard-menu
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          # The OAuth client and the tailnet ACL must both grant this tag.
+          tags: tag:ci
+
+      - name: Deploy to ${{ matrix.host }}
+        env:
+          HOST: ${{ matrix.host }}
+          SSH_USER: tom
+          DEST: /home/tom/app
+          # Tailscale SSH manages host keys at the tailnet layer, so we
+          # don't pin a known_hosts entry for the ephemeral runner.
+          SSH_OPTS: >-
+            -o StrictHostKeyChecking=accept-new
+            -o UserKnownHostsFile=/dev/null
+            -o ConnectTimeout=30
+        run: |
+          set -euo pipefail
+
+          echo "::group::Syncing files to $HOST"
+          rsync -az --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='.env' \
+            --exclude='*.log' \
+            --exclude='.DS_Store' \
+            -e "ssh $SSH_OPTS" \
+            ./ "$SSH_USER@$HOST:$DEST/"
+          echo "::endgroup::"
+
+          echo "::group::Install deps + restart signage on $HOST"
+          ssh $SSH_OPTS "$SSH_USER@$HOST" \
+            "cd '$DEST' && npm install --omit=dev --no-audit --no-fund && sudo systemctl restart signage"
+          echo "::endgroup::"
+
+          echo "Deployed to $HOST ✓"
