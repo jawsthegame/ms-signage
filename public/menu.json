@@ -37,9 +37,9 @@
           "vessel":    "demitasse"
         },
         {
-          "name":      "Americano",
+          "name":      "Americano | Long Black",
           "desc":      "espresso · hot water",
-          "price":     "3.75",
+          "price":     "3.5",
           "accent":    "#E8A000",
           "shadow":    "#904000",
           "esp": 20, "milk": 80, "foam": 0,
@@ -89,6 +89,15 @@
           "accent":    "#CF5828",
           "shadow":    "#702010",
           "esp": 15, "milk": 78, "foam": 7,
+          "vessel":    "mug"
+        },
+        {
+          "name":      "Mocha",
+          "desc":      "espresso · steamed milk · housemade mocha syrup • thin foam",
+          "price":     "5.5 / 6",
+          "accent":    "#C68642",
+          "shadow":    "#702010",
+          "esp": 15, "milk": 78, "foam": 7, "choc": 7,
           "vessel":    "mug"
         }
       ]
